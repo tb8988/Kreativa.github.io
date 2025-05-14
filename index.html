@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberCore Technologies</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <style>
+        :root {
+            --space-black: #0A0A0A;
+            --quantum-blue: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
+            --cyber-lime: #C4F042;
+            --nano-gray: #F8F9FA;
+            --ai-crimson: #FF3860;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--space-black);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .particle-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            background: var(--quantum-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 1rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--cyber-lime);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Interactive Demo */
+        .threat-analyzer {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .analyzer-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 1rem;
+        }
+
+        /* Floating CTA */
+        .floating-cta {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--cyber-lime);
+            color: var(--space-black);
+            padding: 1rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(196, 240, 66, 0.3);
+        }
+
+        /* Animations */
+        @keyframes particle-move {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100vh); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .analyzer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="particle-background" id="particleCanvas"></div>
+        <div class="hero-content">
+            <h1>Secure Digital Evolution</h1>
+            <p>AI-Driven Cybersecurity & Enterprise Solutions</p>
+            <button class="floating-cta">Start Free Audit</button>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-grid">
+        <div class="service-card">
+            <h3>Cybersecurity</h3>
+            <p>Enterprise-grade protection with AI monitoring</p>
+        </div>
+        <div class="service-card">
+            <h3>AI Solutions</h3>
+            <p>Custom machine learning implementations</p>
+        </div>
+        <div class="service-card">
+            <h3>Big Data</h3>
+            <p>Real-time analytics at petabyte scale</p>
+        </div>
+    </section>
+
+    <!-- Threat Analyzer Demo -->
+    <section class="threat-analyzer">
+        <div class="analyzer-container">
+            <div class="log-display">
+                <h4>System Log Analysis</h4>
+                <div id="logOutput"></div>
+                <button onclick="runScan()" class="scan-button">Scan Now</button>
+            </div>
+            <div class="radar-display" id="radar"></div>
+        </div>
+    </section>
+
+    <script>
+        // Particle Animation
+        function createParticles() {
+            const container = document.getElementById('particleCanvas');
+            for(let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.animation = `particle-move ${5 + Math.random() * 10}s linear infinite`;
+                container.appendChild(particle);
+            }
+        }
+
+        // Threat Analyzer Demo
+        function runScan() {
+            const logOutput = document.getElementById('logOutput');
+            logOutput.innerHTML = '<p>🔍 Scanning network...</p>';
+            
+            setTimeout(() => {
+                logOutput.innerHTML = `
+                    <p>✅ All systems secured</p>
+                    <p>🚫 0 critical threats found</p>
+                    <p>🛡️ Firewall active</p>
+                `;
+                updateRadar();
+            }, 2000);
+        }
+
+        function updateRadar() {
+            const radar = document.getElementById('radar');
+            radar.innerHTML = '<div class="radar-visualization"></div>';
+            // Add radar chart implementation here
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+        });
+    </script>
+
+    <!-- External Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</body>
+</html>
