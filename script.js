@@ -205,6 +205,9 @@ function initContactButton() {
 
 // Initialize Everything
 document.addEventListener('DOMContentLoaded', () => {
+    // Register GSAP plugins
+    gsap.registerPlugin(ScrollTrigger);
+    
     initParticles();
     initServices();
     const chart = initRadarChart();
