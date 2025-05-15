@@ -25,6 +25,24 @@ body {
     overflow-x: hidden;
 }
 
+/* Company Logo */
+.logo-container {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 1000;
+}
+
+.company-logo {
+    height: 40px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.company-logo:hover {
+    transform: scale(1.05);
+}
+
 /* Typography */
 h1, h2, h3, h4 {
     font-family: var(--heading-font);
@@ -168,27 +186,6 @@ p {
     color: var(--off-grey);
 }
 
-/* Threat Analyzer */
-.analyzer-section {
-    padding: 8rem 8%;
-}
-
-.analyzer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-}
-
-.chart-container {
-    background-color: var(--dark-accent);
-    border-radius: 16px;
-    padding: 2rem;
-    border: 1px solid rgba(136, 146, 176, 0.1);
-}
-
 /* Floating CTA */
 .floating-cta {
     position: fixed;
@@ -227,6 +224,15 @@ p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .logo-container {
+        top: 1rem;
+        left: 1rem;
+    }
+    
+    .company-logo {
+        height: 30px;
+    }
+    
     .hero-content {
         padding: 0 5%;
     }
@@ -237,19 +243,4 @@ p {
     }
     
     .primary-btn, .secondary-btn {
-        width: 100%;
-        margin-right: 0;
-    }
-    
-    .analyzer-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .floating-cta {
-        bottom: 1rem;
-        right: 1rem;
-        padding: 1rem 1.5rem;
-        font-size: 0.9rem;
-    }
-}
+       

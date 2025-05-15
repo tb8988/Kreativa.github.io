@@ -53,7 +53,7 @@ function initParticles() {
     animate();
 }
 
-// Services Data
+// Services Data - Updated with new services
 const services = [
     {
         icon: 'shield-alt',
@@ -74,6 +74,16 @@ const services = [
         icon: 'project-diagram',
         title: 'Systems Architecture',
         description: 'Scalable infrastructure design and implementation'
+    },
+    {
+        icon: 'mobile-alt',
+        title: 'App Development',
+        description: 'Cross-platform mobile applications for iOS and Android'
+    },
+    {
+        icon: 'code',
+        title: 'Web Development',
+        description: 'Modern, responsive web applications and sites'
     }
 ];
 
@@ -167,39 +177,12 @@ function initScrollReveal() {
     scrollReveals.forEach(el => observer.observe(el));
 }
 
-// Run Threat Scan
-function setupScanButton(chart) {
-    const scanBtn = document.getElementById('scanBtn');
-    
-    scanBtn.addEventListener('click', () => {
-        scanBtn.disabled = true;
-        scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
-        
-        setTimeout(() => {
-            // Generate random scan results
-            const newData = chart.data.datasets[0].data.map(() => 
-                Math.floor(Math.random() * 60) + 10
-            );
-            
-            chart.data.datasets[0].data = newData;
-            chart.update();
-            
-            scanBtn.disabled = false;
-            scanBtn.innerHTML = 'Scan Completed <i class="fas fa-check"></i>';
-            
-            setTimeout(() => {
-                scanBtn.innerHTML = 'Run Security Scan';
-            }, 2000);
-        }, 1500);
-    });
-}
-
 // Initialize Contact Button
 function initContactButton() {
     const contactBtn = document.getElementById('contactBtn');
     
     contactBtn.addEventListener('click', () => {
-        alert('Contact form would open here in a full implementation');
+        alert('Contact Kreativa Tech - Our team will get back to you shortly!');
     });
 }
 
@@ -210,8 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initParticles();
     initServices();
-    const chart = initRadarChart();
     initScrollReveal();
-    setupScanButton(chart);
     initContactButton();
 });
