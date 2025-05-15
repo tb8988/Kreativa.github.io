@@ -160,6 +160,42 @@ function initRadarChart() {
     return chart;
 }
 
+// Run Threat Scan
+function setupScanButton(chart) {
+    const scanBtn = document.getElementById('scanBtn');
+    
+    scanBtn.addEventListener('click', () => {
+        scanBtn.disabled = true;
+        scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+        
+        setTimeout(() => {
+            // Generate random scan results
+            const newData = chart.data.datasets[0].data.map(() => 
+                Math.floor(Math.random() * 60) + 10
+            );
+            
+            chart.data.datasets[0].data = newData;
+            chart.update();
+            
+            scanBtn.disabled = false;
+            scanBtn.innerHTML = 'Scan Completed <i class="fas fa-check"></i>';
+            
+            setTimeout(() => {
+                scanBtn.innerHTML = 'Run Security Scan';
+            }, 2000);
+        }, 1500);
+    });
+}
+
+// Initialize Contact Button
+function initContactButton() {
+    const contactBtn = document.getElementById('contactBtn');
+    
+    contactBtn.addEventListener('click', () => {
+        alert('Contact Kreativa Tech - Our team will get back to you shortly!');
+    });
+}
+
 // Scroll Reveal Animation
 function initScrollReveal() {
     const scrollReveals = document.querySelectorAll('.scroll-reveal');
@@ -177,15 +213,6 @@ function initScrollReveal() {
     scrollReveals.forEach(el => observer.observe(el));
 }
 
-// Initialize Contact Button
-function initContactButton() {
-    const contactBtn = document.getElementById('contactBtn');
-    
-    contactBtn.addEventListener('click', () => {
-        alert('Contact Kreativa Tech - Our team will get back to you shortly!');
-    });
-}
-
 // Initialize Everything
 document.addEventListener('DOMContentLoaded', () => {
     // Register GSAP plugins
@@ -193,6 +220,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initParticles();
     initServices();
+    const chart = initRadarChart();
+    setupScanButton(chart);
     initScrollReveal();
     initContactButton();
 });

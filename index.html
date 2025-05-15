@@ -12,7 +12,7 @@
 <body>
     <!-- Navigation Logo -->
     <div class="logo-container">
-        <img src="assets/logo/Logo - White.png" alt="Kreativa Tech Logo" class="company-logo">
+        <img src="https://via.placeholder.com/150x50/0A192F/00FF00?text=KREATIVA+TECH" alt="Kreativa Tech Logo" class="company-logo">
     </div>
 
     <!-- Hero Section -->
@@ -35,6 +35,25 @@
             <!-- Cards will be populated by JavaScript -->
         </div>
     </section>
+
+    <!-- Threat Analyzer -->
+    <section class="analyzer-section">
+        <div class="analyzer-container">
+            <div class="analyzer-content scroll-reveal">
+                <h2>Live Threat Analysis</h2>
+                <p>Real-time security monitoring powered by AI</p>
+                <button class="accent-btn" id="scanBtn">Run Security Scan</button>
+            </div>
+            <div class="chart-container scroll-reveal">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating CTA -->
+    <button class="floating-cta" id="contactBtn">
+        <i class="fas fa-comment-dots"></i> Contact Kreativa Tech
+    </button>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
