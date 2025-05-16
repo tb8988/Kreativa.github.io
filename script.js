@@ -1,48 +1,16 @@
 // Main App Controller
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize theme first
-    initTheme();
-    
     // Initialize all components
     initParticles();
     initServices();
     initCaseStudies();
-    initChat();
     initRadarChart();
+    initChat();
     initScrollAnimations();
-    
-    // Set up event listeners
-    setupEventListeners();
+    initContactForm();
 });
 
-// 1. Theme Management
-function initTheme() {
-    const themeBtn = document.getElementById('themeSwitcher');
-    if (!themeBtn) return;
-    
-    const setTheme = (theme) => {
-        document.documentElement.dataset.theme = theme;
-        localStorage.setItem('kreativa-theme', theme);
-        
-        const icon = themeBtn.querySelector('i');
-        if (icon) {
-            icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        }
-    };
-    
-    // Load saved theme or default to dark
-    const savedTheme = localStorage.getItem('kreativa-theme') || 'dark';
-    setTheme(savedTheme);
-    
-    // Toggle theme on button click
-    themeBtn.addEventListener('click', () => {
-        const currentTheme = document.documentElement.dataset.theme;
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        setTheme(newTheme);
-    });
-}
-
-// 2. Particle Background
+// 1. Particle Background
 function initParticles() {
     const canvas = document.getElementById('threeCanvas');
     if (!canvas || !window.THREE) return;
@@ -96,7 +64,7 @@ function initParticles() {
     });
 }
 
-// 3. Services Grid
+// 2. Services Grid
 function initServices() {
     const services = [
         {
@@ -145,7 +113,7 @@ function initServices() {
     `).join('');
 }
 
-// 4. Case Studies
+// 3. Case Studies
 function initCaseStudies() {
     const studies = [
         { 
@@ -197,53 +165,7 @@ function initCaseStudies() {
     });
 }
 
-// 5. Chat Widget
-function initChat() {
-    const chatWidget = document.getElementById('chatWidget');
-    const contactBtn = document.getElementById('contactBtn');
-    const closeChat = document.getElementById('closeChat');
-    const sendBtn = document.getElementById('sendMessage');
-    const userInput = document.getElementById('userMessage');
-    const messages = document.getElementById('chatMessages');
-
-    if (!chatWidget) return;
-
-    const toggleChat = () => {
-        chatWidget.classList.toggle('active');
-        chatWidget.style.display = chatWidget.classList.contains('active') ? 'block' : 'none';
-    };
-
-    contactBtn.addEventListener('click', toggleChat);
-    closeChat.addEventListener('click', toggleChat);
-
-    const addMessage = (text, isUser = false) => {
-        const message = document.createElement('div');
-        message.className = `message ${isUser ? 'user' : 'bot'}`;
-        message.innerHTML = `<p>${text}</p>`;
-        messages.appendChild(message);
-        messages.scrollTop = messages.scrollHeight;
-    };
-
-    const sendMessage = () => {
-        const text = userInput.value.trim();
-        if (text) {
-            addMessage(text, true);
-            userInput.value = '';
-            
-            // Simulate AI response
-            setTimeout(() => {
-                addMessage("Thanks for your message! Our team will respond shortly.");
-            }, 800);
-        }
-    };
-
-    sendBtn.addEventListener('click', sendMessage);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-}
-
-// 6. Radar Chart
+// 4. Radar Chart
 function initRadarChart() {
     const ctx = document.getElementById('radarChart')?.getContext('2d');
     if (!ctx) return;
@@ -300,9 +222,84 @@ function initRadarChart() {
     });
 }
 
+// 5. Chat Widget
+function initChat() {
+    const chatWidget = document.getElementById('chatWidget');
+    const chatToggle = document.getElementById('chatToggle');
+    const closeChat = document.getElementById('closeChat');
+    const sendBtn = document.getElementById('sendMessage');
+    const userInput = document.getElementById('userMessage');
+    const messages = document.getElementById('chatMessages');
+
+    if (!chatWidget) return;
+
+    const toggleChat = () => {
+        chatWidget.classList.toggle('active');
+        chatWidget.style.display = chatWidget.classList.contains('active') ? 'block' : 'none';
+    };
+
+    chatToggle.addEventListener('click', toggleChat);
+    closeChat.addEventListener('click', toggleChat);
+
+    const addMessage = (text, isUser = false) => {
+        const message = document.createElement('div');
+        message.className = `message ${isUser ? 'user' : 'bot'}`;
+        message.innerHTML = `<p>${text}</p>`;
+        messages.appendChild(message);
+        messages.scrollTop = messages.scrollHeight;
+    };
+
+    const sendMessage = () => {
+        const text = userInput.value.trim();
+        if (text) {
+            addMessage(text, true);
+            userInput.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                addMessage("Thanks for your message! Our team will respond shortly.");
+            }, 800);
+        }
+    };
+
+    sendBtn.addEventListener('click', sendMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+}
+
+// 6. Contact Form
+function initContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if (!contactForm) return;
+    
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Get form values
+        const name = document.getElementById('contactName').value;
+        const email = document.getElementById('contactEmail').value;
+        const message = document.getElementById('contactMessage').value;
+        
+        // Here you would normally send the data to a server
+        console.log('Contact form submitted:', { name, email, message });
+        
+        // Show success message
+        alert('Thank you for your message! We will contact you soon.');
+        contactForm.reset();
+    });
+}
+
 // 7. Scroll Animations
 function initScrollAnimations() {
-    if (!window.gsap) return;
+    if (!window.gsap) {
+        // Fallback if GSAP fails to load
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            el.style.opacity = 1;
+            el.style.transform = 'none';
+        });
+        return;
+    }
     
     gsap.registerPlugin(ScrollTrigger);
     
@@ -310,28 +307,13 @@ function initScrollAnimations() {
         gsap.from(element, {
             scrollTrigger: {
                 trigger: element,
-                start: 'top 80%',
-                toggleActions: 'play none none reverse'
+                start: "top 90%",
+                toggleActions: "play none none none"
             },
             opacity: 0,
-            y: 50,
-            duration: 1
+            y: 30,
+            duration: 0.8,
+            ease: "power2.out"
         });
-    });
-}
-
-// 8. Event Listeners
-function setupEventListeners() {
-    // Biometric demo for main CTA
-    document.getElementById('mainCta')?.addEventListener('click', (e) => {
-        if (window.PublicKeyCredential) {
-            e.preventDefault();
-            alert("Biometric authentication would launch here in production");
-        }
-    });
-    
-    // Responsive adjustments
-    window.addEventListener('resize', () => {
-        // Handle any responsive adjustments
     });
 }

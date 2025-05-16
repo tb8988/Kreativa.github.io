@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,13 +33,6 @@
     <!-- Navigation Logo -->
     <div class="logo-container">
         <img src="https://via.placeholder.com/150x50/0A192F/00FF00?text=KREATIVA+TECH" alt="Kreativa Tech Logo" class="company-logo">
-    </div>
-
-    <!-- Theme Toggle -->
-    <div class="theme-toggle">
-        <button id="themeSwitcher">
-            <i class="fas fa-moon"></i>
-        </button>
     </div>
 
     <!-- Hero Section -->
@@ -91,11 +84,25 @@
         </div>
     </section>
 
-    <!-- Floating CTA -->
-    <button class="floating-cta" id="contactBtn">
-        <i class="fas fa-comment-dots"></i>
-        <span class="text">Contact Kreativa Tech</span>
-    </button>
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-container scroll-reveal">
+            <h2>Get In Touch</h2>
+            <p>Ready to secure your digital assets? Contact our team today.</p>
+            <form id="contactForm">
+                <div class="form-group">
+                    <input type="text" id="contactName" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="contactEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="contactMessage" placeholder="How can we help you?" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
 
     <!-- AI Chat Widget -->
     <div id="chatWidget" class="chat-widget">
@@ -109,6 +116,11 @@
             <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
+
+    <!-- Chat Toggle Button -->
+    <button class="chat-toggle-btn" id="chatToggle">
+        <i class="fas fa-comments"></i>
+    </button>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
