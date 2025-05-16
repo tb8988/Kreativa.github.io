@@ -1,14 +1,19 @@
 :root {
-    /* Color Scheme */
+    /* Dark Theme (Default) */
     --dark-blue: #0A192F;
     --off-grey: #CCD6F6;
     --dark-off-grey: #8892B0;
     --vibrant-green: #00FF00;
     --dark-accent: #020C1B;
-    
-    /* Typography */
-    --heading-font: 'Space Grotesk', sans-serif;
-    --body-font: 'Inter', sans-serif;
+}
+
+:root[data-theme="light"] {
+    /* Light Theme */
+    --dark-blue: #F8F9FA;
+    --off-grey: #0A192F;
+    --dark-off-grey: #495670;
+    --vibrant-green: #00A876;
+    --dark-accent: #E2E8F0;
 }
 
 /* Base Styles */
@@ -21,8 +26,9 @@
 body {
     background-color: var(--dark-blue);
     color: var(--off-grey);
-    font-family: var(--body-font);
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Layout Components */
@@ -63,6 +69,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
+}
+
+#themeSwitcher:hover {
+    transform: scale(1.1);
 }
 
 /* Hero Section */
@@ -92,7 +103,76 @@ body {
     margin: 0 auto;
 }
 
-/* Services Grid */
+h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    margin-bottom: 2rem;
+}
+
+.subtitle {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    color: var(--dark-off-grey);
+}
+
+/* Buttons */
+.primary-btn, .secondary-btn, .accent-btn {
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 1rem;
+}
+
+.primary-btn {
+    background-color: var(--vibrant-green);
+    color: var(--dark-blue);
+    margin-right: 1rem;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: var(--vibrant-green);
+    border: 1px solid var(--vibrant-green);
+}
+
+.accent-btn {
+    background-color: var(--dark-accent);
+    color: var(--vibrant-green);
+    border: 1px solid var(--vibrant-green);
+    margin-top: 2rem;
+}
+
+.cta-container {
+    display: flex;
+    margin-top: 2rem;
+}
+
+/* Services Section */
+.services-section {
+    padding: 8rem 8%;
+    background-color: var(--dark-accent);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 5rem;
+    color: var(--off-grey);
+}
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -101,17 +181,173 @@ body {
     margin: 0 auto;
 }
 
+.service-card {
+    background-color: rgba(2, 12, 27, 0.7);
+    border-radius: 16px;
+    padding: 2.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--vibrant-green);
+}
+
+.service-icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 255, 0, 0.1);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: var(--vibrant-green);
+}
+
+.service-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--off-grey);
+}
+
 /* Case Studies */
 .case-studies {
     padding: 6rem 8%;
-    background: var(--dark-accent);
+    background: var(--dark-blue);
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.filters button {
+    background: transparent;
+    color: var(--off-grey);
+    border: 1px solid var(--vibrant-green);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.filters button.active,
+.filters button:hover {
+    background: var(--vibrant-green);
+    color: var(--dark-blue);
 }
 
 .case-study-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
-    margin-top: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.case-study {
+    background: rgba(2, 12, 27, 0.7);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.case-study:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: var(--vibrant-green);
+}
+
+.case-study h3 {
+    color: var(--vibrant-green);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.case-study p {
+    margin-bottom: 1rem;
+    color: var(--dark-off-grey);
+}
+
+.case-study .metrics {
+    margin-top: 1.5rem;
+    font-weight: 500;
+}
+
+.case-study .roi {
+    font-weight: bold;
+    color: var(--vibrant-green);
+}
+
+/* Threat Analyzer */
+.analyzer-section {
+    padding: 8rem 8%;
+    background: var(--dark-accent);
+}
+
+.analyzer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.chart-container {
+    background-color: var(--dark-blue);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+/* Floating CTA */
+.floating-cta {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--vibrant-green);
+    color: var(--dark-blue);
+    padding: 1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+}
+
+.floating-cta:hover {
+    width: auto;
+    padding: 1rem 1.5rem;
+}
+
+.floating-cta .text {
+    display: none;
+    white-space: nowrap;
+}
+
+.floating-cta:hover .text {
+    display: inline;
+}
+
+.floating-cta i {
+    font-size: 1.2rem;
 }
 
 /* Chat Widget */
@@ -134,7 +370,92 @@ body {
     transform: translateY(0);
 }
 
-/* ... (previous styles remain unchanged) ... */
+.chat-header {
+    padding: 1rem;
+    background: var(--dark-blue);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header span {
+    font-weight: 600;
+}
+
+#closeChat {
+    background: none;
+    border: none;
+    color: var(--off-grey);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.chat-messages {
+    padding: 1rem;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    max-width: 80%;
+}
+
+.message.user {
+    background: var(--vibrant-green);
+    color: var(--dark-blue);
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+}
+
+.message.bot {
+    background: var(--dark-blue);
+    color: var(--off-grey);
+    margin-right: auto;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-input {
+    display: flex;
+    padding: 1rem;
+    border-top: 1px solid rgba(136, 146, 176, 0.2);
+}
+
+#userMessage {
+    flex: 1;
+    padding: 0.8rem;
+    border-radius: 25px;
+    border: 1px solid var(--dark-off-grey);
+    background: var(--dark-blue);
+    color: var(--off-grey);
+}
+
+#sendMessage {
+    background: var(--vibrant-green);
+    color: var(--dark-blue);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+/* Animations */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.scroll-reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -151,8 +472,37 @@ body {
         padding: 0 5%;
     }
     
+    .cta-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .primary-btn, .secondary-btn {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .analyzer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .floating-cta {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
     .chat-widget {
         width: 90%;
         right: 5%;
+    }
+
+    .filters {
+        gap: 0.5rem;
+    }
+
+    .filters button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
     }
 }
