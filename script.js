@@ -265,3 +265,230 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initContactButton();
 });
+
+
+// ========== Main Enhancements ========== //
+
+// 1. AI Chat Assistant
+class ChatAssistant {
+  constructor() {
+    this.widget = document.getElementById('chatWidget');
+    this.messages = document.getElementById('chatMessages');
+    this.initChat();
+  }
+
+  initChat() {
+    document.getElementById('contactBtn').addEventListener('click', () => {
+      this.widget.classList.add('active');
+      this.addMessage("Hi! I'm Kreativa's AI assistant. How can I help?");
+    });
+
+    document.getElementById('sendMessage').addEventListener('click', this.sendMessage.bind(this));
+  }
+
+  addMessage(text, isUser = false) {
+    const message = document.createElement('div');
+    message.className = `message ${isUser ? 'user' : 'bot'}`;
+    message.innerHTML = `<p>${text}</p>`;
+    this.messages.appendChild(message);
+    this.messages.scrollTop = this.messages.scrollHeight;
+  }
+
+  async sendMessage() {
+    const input = document.getElementById('userMessage');
+    const text = input.value.trim();
+    if (text) {
+      this.addMessage(text, true);
+      input.value = '';
+      
+      // Simulate API call
+      const response = await this.getAIResponse(text);
+      this.addMessage(response);
+    }
+  }
+
+  async getAIResponse(query) {
+    // In production, replace with actual API call
+    const responses = {
+      "cybersecurity": "Our cybersecurity services include...",
+      "pricing": "We offer customized pricing based on...",
+      "default": "I can help with: cybersecurity, AI solutions, risk management..."
+    };
+
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    if (query.toLowerCase().includes('security')) return responses.cybersecurity;
+    if (query.toLowerCase().includes('price')) return responses.pricing;
+    return responses.default;
+  }
+}
+
+// 2. Case Study Filter
+class CaseStudyFilter {
+  constructor() {
+    this.grid = document.querySelector('.case-study-grid');
+    this.init();
+  }
+
+  async init() {
+    const studies = await this.fetchCaseStudies();
+    this.renderStudies(studies);
+    this.setupFilters();
+  }
+
+  async fetchCaseStudies() {
+    // Mock data - replace with API call
+    return [
+      { id: 1, title: "Banking Security Upgrade", industry: "finance", roi: "240%"},
+      { id: 2, title: "Hospital Data Protection", industry: "healthcare", roi: "180%"}
+    ];
+  }
+
+  renderStudies(studies) {
+    this.grid.innerHTML = studies.map(study => `
+      <div class="case-study" data-industry="${study.industry}">
+        <h3>${study.title}</h3>
+        <p>ROI: <span class="roi">${study.roi}</span></p>
+      </div>
+    `).join('');
+  }
+
+  setupFilters() {
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+        this.filterStudies(filter);
+      });
+    });
+  }
+
+  filterStudies(filter) {
+    document.querySelectorAll('.case-study').forEach(study => {
+      study.style.display = filter === 'all' || study.dataset.industry === filter 
+        ? 'block' : 'none';
+    });
+  }
+}
+
+// 3. Theme Management
+class ThemeManager {
+  constructor() {
+    this.themeBtn = document.getElementById('themeSwitcher');
+    this.init();
+  }
+
+  init() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    this.setTheme(savedTheme);
+    
+    this.themeBtn.addEventListener('click', () => {
+      const newTheme = document.documentElement.dataset.theme === 'dark' 
+        ? 'light' : 'dark';
+      this.setTheme(newTheme);
+    });
+  }
+
+  setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+    this.themeBtn.innerHTML = theme === 'dark' 
+      ? '<i class="fas fa-moon"></i>' 
+      : '<i class="fas fa-sun"></i>';
+  }
+}
+
+// 4. Biometric Authentication Demo
+class BiometricAuth {
+  constructor() {
+    this.prompt = document.createElement('div');
+    this.prompt.className = 'biometric-prompt';
+    this.prompt.innerHTML = `
+      <h3>Secure Login</h3>
+      <p>Verify your identity</p>
+      <button id="useBiometric"><i class="fas fa-fingerprint"></i> Use Biometrics</button>
+    `;
+    document.body.appendChild(this.prompt);
+    this.init();
+  }
+
+  async init() {
+    if (!window.PublicKeyCredential) {
+      console.log("Biometrics not supported");
+      return;
+    }
+
+    document.getElementById('primary-btn').addEventListener('click', () => {
+      this.showPrompt();
+    });
+
+    document.getElementById('useBiometric').addEventListener('click', () => {
+      this.authenticate();
+    });
+  }
+
+  showPrompt() {
+    this.prompt.style.display = 'block';
+  }
+
+  async authenticate() {
+    try {
+      const credential = await navigator.credentials.get({
+        publicKey: {
+          challenge: new Uint8Array([/* ... */]),
+          rpId: window.location.hostname,
+          userVerification: "required"
+        }
+      });
+      this.prompt.innerHTML = '<p>Authentication successful!</p>';
+    } catch (err) {
+      this.prompt.innerHTML = '<p>Authentication failed</p>';
+    }
+  }
+}
+
+// ========== Initialize Everything ========== //
+document.addEventListener('DOMContentLoaded', () => {
+  // Existing initializations
+  gsap.registerPlugin(ScrollTrigger);
+  initParticles();
+  initServices();
+  const chart = initRadarChart();
+  setupScanButton(chart);
+  initScrollReveal();
+  initContactButton();
+
+  // New feature initializations
+  new ChatAssistant();
+  new CaseStudyFilter();
+  new ThemeManager();
+  
+  if (window.PublicKeyCredential) {
+    new BiometricAuth();
+  }
+
+  // WASM Performance Demo
+  if (window.WebAssembly) {
+    initWASMDemo();
+  }
+});
+
+// 5. WASM Performance Demo (separate file wasm-loader.js)
+async function initWASMDemo() {
+  const response = await fetch('encryption.wasm');
+  const buffer = await response.arrayBuffer();
+  const module = await WebAssembly.instantiate(buffer);
+  window.wasmEncrypt = module.instance.exports.encrypt;
+}
+
+// 6. Analytics Setup
+function initAnalytics() {
+  // Hotjar
+  (function(h,o,t,j,a,r){
+    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+    h._hjSettings={hjid:YOUR_HOTJAR_ID,hjsv:6};
+    a=o.getElementsByTagName('head')[0];
+    r=o.createElement('script');r.async=1;
+    r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+    a.appendChild(r);
+  })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+}
