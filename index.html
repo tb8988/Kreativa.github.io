@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
-	<!-- FavIcon -->
+		<!-- FavIcon -->
 <link rel="apple-touch-icon" sizes="57x57" href="assets/logos/favicon/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="assets/logos/favicon/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="assets/logos/favicon/apple-icon-72x72.png">
@@ -22,49 +22,24 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">	
-	
-	
+
     <title>Kreativa Tech | Secure Digital Evolution</title>
     <meta name="description" content="Enterprise cybersecurity and AI solutions">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
-<!-- AI Chat Widget -->
-<div id="chatWidget" class="chat-widget">
-  <div class="chat-header">
-    <span>Kreativa Assistant</span>
-    <button id="closeChat">×</button>
-  </div>
-  <div id="chatMessages" class="chat-messages"></div>
-  <div class="chat-input">
-    <input type="text" id="userMessage" placeholder="Ask about our services...">
-    <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
-  </div>
-</div>
-
-<!-- Case Studies Section -->
-<section class="case-studies">
-  <h2>Success Stories</h2>
-  <div class="filters">
-    <button data-filter="all">All</button>
-    <button data-filter="finance">Finance</button>
-    <button data-filter="healthcare">Healthcare</button>
-  </div>
-  <div class="case-study-grid"></div>
-</section>
-
-<!-- Theme Toggle -->
-<div class="theme-toggle">
-  <button id="themeSwitcher">
-    <i class="fas fa-moon"></i>
-  </button>
-</div>
 <body>
     <!-- Navigation Logo -->
     <div class="logo-container">
         <img src="https://via.placeholder.com/150x50/0A192F/00FF00?text=KREATIVA+TECH" alt="Kreativa Tech Logo" class="company-logo">
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="themeSwitcher">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <!-- Hero Section -->
@@ -74,7 +49,7 @@
             <h1 class="scroll-reveal">Secure Digital Evolution</h1>
             <p class="subtitle scroll-reveal">AI-Powered Cybersecurity & Enterprise Solutions</p>
             <div class="cta-container scroll-reveal">
-                <button class="primary-btn">Start Free Audit</button>
+                <button class="primary-btn" id="mainCta">Start Free Audit</button>
                 <button class="secondary-btn">Explore Solutions</button>
             </div>
         </div>
@@ -84,7 +59,20 @@
     <section class="services-section">
         <h2 class="section-title scroll-reveal">Our Core Services</h2>
         <div class="services-grid">
-            <!-- Cards will be populated by JavaScript -->
+            <!-- Populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="case-studies">
+        <h2 class="section-title scroll-reveal">Success Stories</h2>
+        <div class="filters scroll-reveal">
+            <button data-filter="all" class="active">All Industries</button>
+            <button data-filter="finance">Financial</button>
+            <button data-filter="healthcare">Healthcare</button>
+        </div>
+        <div class="case-study-grid scroll-reveal">
+            <!-- Populated by JavaScript -->
         </div>
     </section>
 
@@ -102,48 +90,27 @@
         </div>
     </section>
 
+    <!-- Tech Stack Visualizer -->
+    <section class="tech-stack">
+        <h2 class="section-title scroll-reveal">Our Technology Stack</h2>
+        <div id="techVizContainer" class="scroll-reveal"></div>
+    </section>
+
     <!-- Floating CTA -->
     <button class="floating-cta" id="contactBtn">
-        <i class="fas fa-comment-dots"></i> Contact Kreativa Tech
+        <i class="fas fa-comment-dots"></i> Contact Us
     </button>
 
-    <!-- Contact Modal -->
-    <div class="contact-modal" id="contactModal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Contact Kreativa Tech</h2>
-            <form id="contactForm">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="service">Service Interest</label>
-                    <select id="service" name="service">
-                        <option value="">Select a service</option>
-                        <option value="cybersecurity">Cybersecurity</option>
-                        <option value="ai">AI Solutions</option>
-                        <option value="risk">Risk Management</option>
-                        <option value="architecture">Systems Architecture</option>
-                        <option value="appdev">App Development</option>
-                        <option value="webdev">Web Development</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-            <div class="success-message">
-                <i class="fas fa-check-circle"></i>
-                <h3>Message Sent!</h3>
-                <p>Our team will contact you within 24 hours.</p>
-            </div>
+    <!-- AI Chat Widget -->
+    <div id="chatWidget" class="chat-widget">
+        <div class="chat-header">
+            <span>Kreativa Assistant</span>
+            <button id="closeChat">×</button>
+        </div>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="userMessage" placeholder="Ask about our services...">
+            <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
@@ -152,6 +119,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
