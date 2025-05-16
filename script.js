@@ -53,7 +53,7 @@ function initParticles() {
     animate();
 }
 
-// Services Data - Updated with new services
+// Services Data - Updated with Risk Management
 const services = [
     {
         icon: 'shield-alt',
@@ -66,9 +66,9 @@ const services = [
         description: 'Custom machine learning models for your business needs'
     },
     {
-        icon: 'database',
-        title: 'Big Data',
-        description: 'Enterprise-scale data processing and analytics'
+        icon: 'exclamation-triangle',
+        title: 'Risk Management',
+        description: 'Comprehensive risk assessment and mitigation strategies'
     },
     {
         icon: 'project-diagram',
@@ -187,12 +187,52 @@ function setupScanButton(chart) {
     });
 }
 
-// Initialize Contact Button
+// Enhanced Contact Button Functionality
 function initContactButton() {
     const contactBtn = document.getElementById('contactBtn');
+    const contactModal = document.getElementById('contactModal');
+    const closeBtn = document.querySelector('.close-btn');
+    const contactForm = document.getElementById('contactForm');
+    const successMessage = document.querySelector('.success-message');
     
+    // Open modal
     contactBtn.addEventListener('click', () => {
-        alert('Contact Kreativa Tech - Our team will get back to you shortly!');
+        contactModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+        contactModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    });
+
+    // Close when clicking outside
+    contactModal.addEventListener('click', (e) => {
+        if (e.target === contactModal) {
+            contactModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Form submission
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Simulate form submission
+        setTimeout(() => {
+            contactForm.style.display = 'none';
+            successMessage.style.display = 'block';
+            
+            // Reset form after 3 seconds
+            setTimeout(() => {
+                contactModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                contactForm.style.display = 'block';
+                successMessage.style.display = 'none';
+                contactForm.reset();
+            }, 3000);
+        }, 1000);
     });
 }
 

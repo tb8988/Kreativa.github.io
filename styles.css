@@ -186,6 +186,27 @@ p {
     color: var(--off-grey);
 }
 
+/* Threat Analyzer */
+.analyzer-section {
+    padding: 8rem 8%;
+}
+
+.analyzer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.chart-container {
+    background-color: var(--dark-accent);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid rgba(136, 146, 176, 0.1);
+}
+
 /* Floating CTA */
 .floating-cta {
     position: fixed;
@@ -208,6 +229,101 @@ p {
 
 .floating-cta:hover {
     transform: scale(1.05);
+}
+
+/* Contact Modal Styles */
+.contact-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--dark-accent);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid var(--vibrant-green);
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--off-grey);
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: var(--vibrant-green);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--off-grey);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--dark-off-grey);
+    background-color: var(--dark-blue);
+    color: var(--off-grey);
+    font-family: var(--body-font);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: var(--vibrant-green);
+    color: var(--dark-blue);
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+}
+
+/* Success Message */
+.success-message {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    color: var(--vibrant-green);
+}
+
+.success-message i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
 }
 
 /* Animations */
@@ -257,5 +373,10 @@ p {
         right: 1rem;
         padding: 1rem 1.5rem;
         font-size: 0.9rem;
+    }
+
+    .modal-content {
+        margin: 1rem;
+        padding: 1.5rem;
     }
 }
