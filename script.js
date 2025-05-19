@@ -140,9 +140,13 @@ function initContactForm() {
 function initParticles() {
     const canvas = document.getElementById('threeCanvas');
     if (!canvas || !window.THREE) return;
-
-    // Particle system implementation
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    
+    const renderer = new THREE.WebGLRenderer({ 
+        canvas, 
+        antialias: true,
+        alpha: true
+    });
+    
     renderer.setSize(window.innerWidth, window.innerHeight);
     
     const scene = new THREE.Scene();
@@ -150,31 +154,39 @@ function initParticles() {
     camera.position.z = 5;
 
     // Create particles
-    const particles = new THREE.BufferGeometry();
-    const particleCount = 1000;
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particleCount = 2000;
+    
     const posArray = new Float32Array(particleCount * 3);
-
     for(let i = 0; i < particleCount * 3; i++) {
         posArray[i] = (Math.random() - 0.5) * 10;
     }
-
-    particles.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const material = new THREE.PointsMaterial({
+    
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    
+    const particlesMaterial = new THREE.PointsMaterial({
         size: 0.02,
-        color: 0x00FF00,
+        color: new THREE.Color(0x00FF00),
         transparent: true,
-        opacity: 0.8
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
     });
-
-    const particleMesh = new THREE.Points(particles, material);
-    scene.add(particleMesh);
+    
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
 
     function animate() {
         requestAnimationFrame(animate);
-        particleMesh.rotation.x += 0.0005;
-        particleMesh.rotation.y += 0.001;
+        particlesMesh.rotation.x += 0.0005;
+        particlesMesh.rotation.y += 0.001;
         renderer.render(scene, camera);
     }
-
+    
     animate();
+    
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 }
