@@ -3,14 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize visible content first
     initServices();
     initCaseStudies();
-    initRadarChart();
+    const chart = initRadarChart();
     initContactForm();
     
     // 2. Initialize interactive elements
     initChat();
+    setupScanButton(chart);
     
     // 3. Initialize decorative elements last
     initParticles();
+    initCardGlowEffects();
     
     console.log("Website fully initialized");
 });
@@ -94,26 +96,6 @@ function initCaseStudies() {
 }
 
 // Radar Chart
-/* function initRadarChart() {
-    const ctx = document.getElementById('radarChart');
-    if (!ctx) return;
-
-    new Chart(ctx, {
-        type: 'radar',
-        data: {
-            labels: ['Network', 'Applications', 'Data', 'Endpoints', 'Cloud'],
-            datasets: [{
-                data: [65, 59, 80, 81, 56],
-                backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                borderColor: '#00FF00',
-                pointBackgroundColor: '#00FF00'
-            }]
-        }
-    });
-} */
-
-
-// Initialize Radar Chart
 function initRadarChart() {
     const ctx = document.getElementById('radarChart');
     if (!ctx) return null;
@@ -171,11 +153,9 @@ function setupScanButton(chart) {
     if (!scanBtn || !chart) return;
 
     scanBtn.addEventListener('click', () => {
-        // Disable button during scan
         scanBtn.disabled = true;
         scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
         
-        // Animation timeline
         const tl = gsap.timeline({
             onComplete: () => {
                 scanBtn.disabled = false;
@@ -187,11 +167,9 @@ function setupScanButton(chart) {
             }
         });
         
-        // Animate the chart update
         tl.to({}, {
             duration: 1.5,
             onUpdate: () => {
-                // Generate random values during animation
                 const progress = tl.progress();
                 if (progress > 0.5) {
                     const newData = chart.data.datasets[0].data.map((val, i) => {
@@ -203,7 +181,6 @@ function setupScanButton(chart) {
                 }
             },
             onComplete: () => {
-                // Final random results
                 const finalData = chart.data.datasets[0].data.map(() => 
                     Math.floor(Math.random() * 60) + 10
                 );
@@ -213,19 +190,6 @@ function setupScanButton(chart) {
         });
     });
 }
-
-// Initialize Everything
-document.addEventListener('DOMContentLoaded', () => {
-    // Register GSAP plugins
-    gsap.registerPlugin(ScrollTrigger);
-    
-    initParticles();
-    initServices();
-    const chart = initRadarChart();
-    initScrollReveal();
-    setupScanButton(chart);
-    initContactButton();
-});
 
 // Chat Widget
 function initChat() {
@@ -268,7 +232,6 @@ function initParticles() {
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
 
-    // Create particles
     const particlesGeometry = new THREE.BufferGeometry();
     const particleCount = 2000;
     
@@ -303,5 +266,25 @@ function initParticles() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+}
+
+// Dynamic Glow Position Tracking
+function initCardGlowEffects() {
+    const cards = document.querySelectorAll('.service-card, .case-study, .chart-container, .contact-container, #contactForm');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.removeProperty('--mouse-x');
+            card.style.removeProperty('--mouse-y');
+        });
     });
 }

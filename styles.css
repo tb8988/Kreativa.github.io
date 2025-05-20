@@ -55,7 +55,7 @@ section {
     padding: 6rem 8%;
 }
 
-/* Hero Section Fixes */
+/* Hero Section */
 .hero {
     height: 100vh;
     position: relative;
@@ -118,11 +118,37 @@ section {
     border-radius: 16px;
     padding: 2.5rem;
     border: 1px solid rgba(136, 146, 176, 0.1);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0, 255, 0, 0.1), transparent 40%);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+.service-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .service-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
+    border-color: rgba(0, 255, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 255, 0, 0.1);
 }
 
 .service-icon {
@@ -139,38 +165,6 @@ section {
 }
 
 /* Case Studies */
-/* .case-study-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.case-study {
-    background: rgba(2, 12, 27, 0.7);
-    border-radius: 16px;
-    padding: 2rem;
-    border: 1px solid rgba(136, 146, 176, 0.1);
-}
- */
-/* Contact Section */
-/* .contact-container {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-#contactForm {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 500px;
-    margin: 0 auto;
-} */
-
-/* ======================
-   Case Studies Section 
-   ====================== */
 .case-studies {
     background: rgba(2, 12, 27, 0.5);
     border-top: 1px solid rgba(0, 255, 0, 0.1);
@@ -206,6 +200,28 @@ section {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
+}
+
+.case-study::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0, 255, 0, 0.1), transparent 40%);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.case-study:hover::before {
+    opacity: 1;
+}
+
+.case-study > * {
+    position: relative;
+    z-index: 1;
 }
 
 .case-study::after {
@@ -247,9 +263,7 @@ section {
     font-weight: 600;
 }
 
-/* ======================
-   Threat Analyzer Section 
-   ====================== */
+/* Threat Analyzer */
 .analyzer-section {
     background: linear-gradient(180deg, rgba(2, 12, 27, 0.7) 0%, rgba(10, 25, 47, 1) 100%);
     padding: 6rem 8%;
@@ -313,11 +327,36 @@ section {
     flex: 1;
     position: relative;
     z-index: 1;
+    background: rgba(2, 12, 27, 0.7);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid rgba(136, 146, 176, 0.1);
+    transition: all 0.3s ease;
 }
 
-/* ======================
-   Contact Section 
-   ====================== */
+.chart-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0, 255, 0, 0.1), transparent 40%);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.chart-container:hover::before {
+    opacity: 1;
+}
+
+.chart-container:hover {
+    border-color: rgba(0, 255, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 255, 0, 0.1);
+}
+
+/* Contact Section */
 .contact-section {
     background: #0A192F;
     padding: 6rem 8%;
@@ -351,6 +390,36 @@ section {
     border: 1px solid rgba(0, 255, 0, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: left;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+#contactForm::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0, 255, 0, 0.1), transparent 40%);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#contactForm:hover::before {
+    opacity: 1;
+}
+
+#contactForm:hover {
+    border-color: rgba(0, 255, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 255, 0, 0.1);
+}
+
+#contactForm > * {
+    position: relative;
+    z-index: 1;
 }
 
 .form-group {
@@ -382,39 +451,6 @@ section {
     resize: vertical;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1024px) {
-    .analyzer-container {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .analyzer-content {
-        padding-right: 0;
-        margin-bottom: 3rem;
-    }
-    
-    .chart-container {
-        width: 100%;
-        max-width: 500px;
-    }
-}
-
-@media (max-width: 768px) {
-    .case-study-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .analyzer-container,
-    #contactForm {
-        padding: 2rem;
-    }
-    
-    section {
-        padding: 4rem 5%;
-    }
-}
-
 /* Chat Widget */
 .chat-widget {
     position: fixed;
@@ -443,18 +479,6 @@ section {
     justify-content: center;
     cursor: pointer;
     z-index: 1000;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    section {
-        padding: 4rem 5%;
-    }
-    
-    .services-grid,
-    .case-study-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 /* Button Styles */
@@ -586,4 +610,46 @@ button {
 
 #closeChat:hover {
     color: #00FF00;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .analyzer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .analyzer-content {
+        padding-right: 0;
+        margin-bottom: 3rem;
+    }
+    
+    .chart-container {
+        width: 100%;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 4rem 5%;
+    }
+    
+    .services-grid,
+    .case-study-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .analyzer-container,
+    #contactForm {
+        padding: 2rem;
+    }
+    
+    .company-logo {
+        height: 60px;
+    }
+    
+    .cta-container {
+        flex-direction: column;
+    }
 }
