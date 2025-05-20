@@ -271,7 +271,7 @@ function initParticles() {
 
 // Dynamic Glow Position Tracking
 function initCardGlowEffects() {
-    const cards = document.querySelectorAll('.service-card, .case-study, .chart-container, .contact-container, #contactForm');
+    const cards = document.querySelectorAll('.service-card, .case-study, .chart-container, .contact-container, #contactForm, .app-card');
     
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
@@ -288,3 +288,57 @@ function initCardGlowEffects() {
         });
     });
 }
+
+
+// Initialize Apps Showcase
+function initAppsShowcase() {
+    const apps = [
+        {
+            icon: 'mobile-screen',
+            title: 'SecureVault',
+            description: 'Military-grade encrypted storage for sensitive documents',
+            badges: ['Security', 'iOS', 'Android']
+        },
+        {
+            icon: 'chart-network',
+            title: 'Network Sentinel',
+            description: 'Real-time network monitoring and threat detection',
+            badges: ['Enterprise', 'Dashboard', 'AI']
+        },
+        {
+            icon: 'robot',
+            title: 'AI Companion',
+            description: 'Personal productivity assistant with natural language processing',
+            badges: ['AI', 'Productivity', 'Cross-platform']
+        },
+        {
+            icon: 'database',
+            title: 'DataFlow',
+            description: 'Enterprise data integration and visualization platform',
+            badges: ['Big Data', 'Analytics', 'Cloud']
+        }
+    ];
+
+    const grid = document.querySelector('.apps-grid');
+    if (!grid) return;
+
+    grid.innerHTML = apps.map(app => `
+        <div class="app-card">
+            <div class="app-icon">
+                <i class="fas fa-${app.icon}"></i>
+            </div>
+            <h3>${app.title}</h3>
+            <p>${app.description}</p>
+            <div class="app-badges">
+                ${app.badges.map(badge => `<span class="app-badge">${badge}</span>`).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+// Update the initialization to include the apps showcase
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing initialization code ...
+    initAppsShowcase();
+    initCardGlowEffects(); // This will now include app cards too
+});

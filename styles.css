@@ -652,4 +652,160 @@ button {
     .cta-container {
         flex-direction: column;
     }
+	.apps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .app-card {
+        padding: 1.5rem;
+    }
+}
+
+/* ======================
+   Apps Showcase Section 
+   ====================== */
+.apps-section {
+    background: rgba(46, 9, 80, 0.2);
+    border-top: 1px solid rgba(158, 33, 251, 0.1);
+    border-bottom: 1px solid rgba(158, 33, 251, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.apps-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 80% 20%, rgba(158, 33, 251, 0.05) 0%, transparent 50%);
+    z-index: 0;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #CCD6F6;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-card {
+    background: linear-gradient(145deg, rgba(46, 9, 80, 0.5) 0%, rgba(46, 9, 80, 0.3) 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid rgba(158, 33, 251, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.app-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), 
+              rgba(158, 33, 251, 0.1), transparent 40%);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.app-card:hover::before {
+    opacity: 1;
+}
+
+.app-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.app-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(158, 33, 251, 0.3);
+    box-shadow: 0 12px 40px rgba(158, 33, 251, 0.1);
+}
+
+.app-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(158, 33, 251, 0.1);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: #9e21fb;
+    font-size: 1.8rem;
+}
+
+.app-card h3 {
+    color: #CCD6F6;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.app-card p {
+    color: #8892B0;
+    margin-bottom: 1.5rem;
+}
+
+.app-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(158, 33, 251, 0.2);
+    color: #9e21fb;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.apps-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+/* Purple Accent Button */
+.purple-accent-btn {
+    background: rgba(158, 33, 251, 0.1);
+    color: #9e21fb;
+    border: 1px solid #9e21fb;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.purple-accent-btn:hover {
+    background: rgba(158, 33, 251, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(158, 33, 251, 0.2);
+}
+
+.purple-accent-btn:active {
+    transform: translateY(0);
 }
