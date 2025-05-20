@@ -451,7 +451,7 @@ section {
     resize: vertical;
 }
 
-/* Chat Widget */
+/* Chat Widget Enhancements */
 .chat-widget {
     position: fixed;
     bottom: 100px;
@@ -462,8 +462,100 @@ section {
     border: 1px solid #00FF00;
     display: none;
     z-index: 1001;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 255, 0, 0.1);
 }
 
+.chat-header {
+    background: rgba(0, 255, 0, 0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.chat-header span {
+    font-weight: 600;
+    color: #00FF00;
+}
+
+#closeChat {
+    background: transparent;
+    border: none;
+    color: #CCD6F6;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+#closeChat:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #00FF00;
+}
+
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: rgba(2, 12, 27, 0.7);
+}
+
+.chat-input {
+    display: flex;
+    padding: 1rem;
+    background: rgba(2, 12, 27, 0.9);
+    border-top: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+#userMessage {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: rgba(10, 25, 47, 0.7);
+    border: 1px solid rgba(136, 146, 176, 0.2);
+    border-radius: 8px;
+    color: #CCD6F6;
+    font-family: 'Inter', sans-serif;
+    margin-right: 0.5rem;
+}
+
+#userMessage:focus {
+    outline: none;
+    border-color: #00FF00;
+    box-shadow: 0 0 0 2px rgba(0, 255, 0, 0.2);
+}
+
+/* Chat Message Bubbles */
+.message {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    max-width: 80%;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.user-message {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    margin-left: auto;
+    color: #CCD6F6;
+}
+
+.bot-message {
+    background: rgba(136, 146, 176, 0.1);
+    border: 1px solid rgba(136, 146, 176, 0.2);
+    margin-right: auto;
+    color: #CCD6F6;
+}
+
+/* Chat Toggle Button Enhancements */
 .chat-toggle-btn {
     position: fixed;
     bottom: 2rem;
@@ -479,6 +571,21 @@ section {
     justify-content: center;
     cursor: pointer;
     z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+}
+
+.chat-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 255, 0, 0.4);
+}
+
+.chat-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+.chat-toggle-btn i {
+    font-size: 1.5rem;
 }
 
 /* Button Styles */

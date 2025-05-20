@@ -191,16 +191,85 @@ function setupScanButton(chart) {
     });
 }
 
-// Chat Widget
+// Enhanced Chat Widget
 function initChat() {
     const chatWidget = document.getElementById('chatWidget');
     const chatToggle = document.getElementById('chatToggle');
+    const closeChat = document.getElementById('closeChat');
+    const sendMessage = document.getElementById('sendMessage');
+    const userMessage = document.getElementById('userMessage');
+    const chatMessages = document.getElementById('chatMessages');
     
-    if (!chatWidget || !chatToggle) return;
+    if (!chatWidget || !chatToggle || !closeChat || !sendMessage || !userMessage || !chatMessages) return;
 
-    chatToggle.addEventListener('click', () => {
+    // Toggle chat visibility
+    const toggleChat = () => {
         chatWidget.style.display = chatWidget.style.display === 'block' ? 'none' : 'block';
+    };
+
+    // Add welcome message
+    const addWelcomeMessage = () => {
+        const welcomeMsg = `
+            <div class="message bot-message">
+                <p>Hello! I'm Kreativa Assistant. How can I help you today?</p>
+                <p>You can ask about:</p>
+                <ul>
+                    <li>Our services</li>
+                    <li>Pricing information</li>
+                    <li>Technical support</li>
+                </ul>
+            </div>
+        `;
+        chatMessages.innerHTML = welcomeMsg;
+    };
+
+    // Add message to chat
+    const addMessage = (message, isUser = false) => {
+        const messageClass = isUser ? 'user-message' : 'bot-message';
+        const messageElement = `
+            <div class="message ${messageClass}">
+                <p>${message}</p>
+            </div>
+        `;
+        chatMessages.insertAdjacentHTML('beforeend', messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
+
+    // Handle sending messages
+    const handleSendMessage = () => {
+        const message = userMessage.value.trim();
+        if (message) {
+            addMessage(message, true);
+            userMessage.value = '';
+            
+            // Simulate bot response after a short delay
+            setTimeout(() => {
+                const responses = [
+                    "Thanks for your message! Our team will get back to you soon.",
+                    "I've noted your question. Would you like me to connect you with a specialist?",
+                    "That's a great question! Let me find the right information for you.",
+                    "We'd be happy to help with that. Can you provide more details?"
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse);
+            }, 1000);
+        }
+    };
+
+    // Event listeners
+    chatToggle.addEventListener('click', toggleChat);
+    closeChat.addEventListener('click', toggleChat);
+    
+    sendMessage.addEventListener('click', handleSendMessage);
+    
+    userMessage.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleSendMessage();
+        }
     });
+
+    // Initialize with welcome message
+    addWelcomeMessage();
 }
 
 // Contact Form
