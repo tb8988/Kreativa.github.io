@@ -94,7 +94,7 @@ function initCaseStudies() {
 }
 
 // Radar Chart
-function initRadarChart() {
+/* function initRadarChart() {
     const ctx = document.getElementById('radarChart');
     if (!ctx) return;
 
@@ -110,7 +110,122 @@ function initRadarChart() {
             }]
         }
     });
+} */
+
+
+// Initialize Radar Chart
+function initRadarChart() {
+    const ctx = document.getElementById('radarChart');
+    if (!ctx) return null;
+
+    return new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['Network', 'Applications', 'Data', 'Endpoints', 'Cloud'],
+            datasets: [{
+                label: 'Threat Level',
+                data: [30, 45, 25, 50, 35],
+                backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                borderColor: '#00FF00',
+                pointBackgroundColor: '#00FF00',
+                pointBorderColor: '#fff',
+                pointHoverRadius: 5,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: {
+                        color: 'rgba(204, 214, 246, 0.1)'
+                    },
+                    grid: {
+                        color: 'rgba(204, 214, 246, 0.1)'
+                    },
+                    pointLabels: {
+                        color: '#CCD6F6',
+                        font: {
+                            family: 'Inter'
+                        }
+                    },
+                    ticks: {
+                        display: false,
+                        beginAtZero: true
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
 }
+
+// Run Threat Scan
+function setupScanButton(chart) {
+    const scanBtn = document.getElementById('scanBtn');
+    if (!scanBtn || !chart) return;
+
+    scanBtn.addEventListener('click', () => {
+        // Disable button during scan
+        scanBtn.disabled = true;
+        scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+        
+        // Animation timeline
+        const tl = gsap.timeline({
+            onComplete: () => {
+                scanBtn.disabled = false;
+                scanBtn.innerHTML = 'Scan Completed <i class="fas fa-check"></i>';
+                
+                setTimeout(() => {
+                    scanBtn.innerHTML = 'Run Security Scan';
+                }, 2000);
+            }
+        });
+        
+        // Animate the chart update
+        tl.to({}, {
+            duration: 1.5,
+            onUpdate: () => {
+                // Generate random values during animation
+                const progress = tl.progress();
+                if (progress > 0.5) {
+                    const newData = chart.data.datasets[0].data.map((val, i) => {
+                        const fluctuation = Math.sin(progress * Math.PI * 4 + i) * 20;
+                        return Math.min(100, Math.max(0, val + fluctuation));
+                    });
+                    chart.data.datasets[0].data = newData;
+                    chart.update();
+                }
+            },
+            onComplete: () => {
+                // Final random results
+                const finalData = chart.data.datasets[0].data.map(() => 
+                    Math.floor(Math.random() * 60) + 10
+                );
+                chart.data.datasets[0].data = finalData;
+                chart.update();
+            }
+        });
+    });
+}
+
+// Initialize Everything
+document.addEventListener('DOMContentLoaded', () => {
+    // Register GSAP plugins
+    gsap.registerPlugin(ScrollTrigger);
+    
+    initParticles();
+    initServices();
+    const chart = initRadarChart();
+    initScrollReveal();
+    setupScanButton(chart);
+    initContactButton();
+});
 
 // Chat Widget
 function initChat() {
