@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Add to Threat Analyzer section
-/* function initThreatTicker() {
+function initThreatTicker() {
     const threats = [
         "New Zero-Day Exploit Detected in Wild",
         "Global Ransomware Attacks +37% This Month",
@@ -493,12 +493,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ticker.classList.add('pulse');
         setTimeout(() => ticker.classList.remove('pulse'), 1000);
     }, 8000);
-} */
+}
 
 // ======================
 // Threat Analyzer (Real API)
 // ======================
-async function initRadarChart() {
+/* async function initRadarChart() {
     const ctx = document.getElementById('radarChart');
     if (!ctx) return null;
 
@@ -538,7 +538,7 @@ async function initRadarChart() {
         console.error("Threat API failed:", error);
         return createMockRadarChart(ctx); // Fallback
     }
-}
+} */
 
 
 // New calculator component
