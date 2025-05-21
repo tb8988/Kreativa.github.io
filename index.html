@@ -80,19 +80,43 @@
                 <canvas id="radarChart"></canvas>
             </div>
         </div>
+        
+        <!-- Threat Map Section -->
+        <div class="threat-map-container">
+            <div class="map-header">
+                <h3>Global Threat Activity</h3>
+                <div class="map-legend">
+                    <span class="legend-item"><span class="dot critical"></span> Critical</span>
+                    <span class="legend-item"><span class="dot warning"></span> Warning</span>
+                    <span class="legend-item"><span class="dot neutral"></span> Monitoring</span>
+                </div>
+            </div>
+            <div id="threatMap"></div>
+            <div class="threat-stats">
+                <div class="stat-block">
+                    <h4 data-count="1247">0</h4>
+                    <p>Threats blocked today</p>
+                </div>
+                <div class="stat-block">
+                    <h4 data-count="83">0</h4>
+                    <p>Active incidents</p>
+                </div>
+            </div>
+        </div>
     </section>
-	
+
     <!-- Apps Showcase -->
     <section class="apps-section">
         <h2 class="section-title">Our Mobile Solutions</h2>
         <p class="section-subtitle">Innovative apps transforming industries</p>
         <div class="apps-grid">
-            <!-- Will be populated by JavaScript -->
+            <!-- Populated by JavaScript -->
         </div>
         <div class="apps-cta">
             <button class="purple-accent-btn">View All Applications</button>
         </div>
     </section>
+
     <!-- Contact Section -->
     <section class="contact-section">
         <div class="contact-container">
@@ -136,6 +160,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

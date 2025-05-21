@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initServices();
     initCaseStudies();
     const chart = initRadarChart();
+    initAppsShowcase();
     initContactForm();
     
     // 2. Initialize interactive elements
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Initialize decorative elements last
     initParticles();
     initCardGlowEffects();
+    initThreatMap();
     
     console.log("Website fully initialized");
 });
@@ -255,7 +257,22 @@ function initChat() {
             }, 1000);
         }
     };
+// Add to initChat()
+const smartReplies = {
+    "pricing": "Our enterprise packages start at $15K/month with volume discounts. Would you like a custom quote?",
+    "case studies": "We've helped 37 Fortune 500 companies. Here's our healthcare case study: [link]",
+    // Add more intent responses
+};
 
+// Add NLP-like keyword detection
+function detectIntent(message) {
+    const keywords = {
+        'price': 'pricing',
+        'cost': 'pricing',
+        'example': 'case studies'
+    };
+    return keywords[message.toLowerCase()] || 'default';
+}
     // Event listeners
     chatToggle.addEventListener('click', toggleChat);
     closeChat.addEventListener('click', toggleChat);
@@ -411,3 +428,172 @@ document.addEventListener('DOMContentLoaded', () => {
     initAppsShowcase();
     initCardGlowEffects(); // This will now include app cards too
 });
+
+
+
+// Add to Threat Analyzer section
+function initThreatTicker() {
+    const threats = [
+        "New Zero-Day Exploit Detected in Wild",
+        "Global Ransomware Attacks +37% This Month",
+        "AI-Powered Phishing Campaigns Rising"
+    ];
+    
+    const ticker = document.createElement('div');
+    ticker.className = 'threat-ticker';
+    document.querySelector('.hero').appendChild(ticker);
+    
+    // Rotate threats every 8 seconds
+    setInterval(() => {
+        const randomThreat = threats[Math.floor(Math.random() * threats.length)];
+        ticker.innerHTML = `<span class="alert-badge">LIVE THREAT</span> ${randomThreat}`;
+        ticker.classList.add('pulse');
+        setTimeout(() => ticker.classList.remove('pulse'), 1000);
+    }, 8000);
+}
+
+// New calculator component
+function initROICalculator() {
+    // Sample calculation logic
+    document.getElementById('calculate-roi').addEventListener('click', () => {
+        const potentialLoss = document.getElementById('potential-loss').value;
+        const investment = document.getElementById('solution-cost').value;
+        const roi = (potentialLoss * 0.7 - investment) / investment * 100;
+        document.getElementById('roi-result').innerHTML = `
+            <h4>Estimated ROI: <span class="highlight">${Math.round(roi)}%</span></h4>
+            <p>Potential breach cost reduction: $${(potentialLoss * 0.7).toLocaleString()}</p>
+        `;
+    });
+}
+
+// Threat Map 
+function initThreatMap() {
+    if (!window.d3) {
+        console.warn("D3.js not loaded - skipping threat map");
+        return;
+    }
+
+    // Map dimensions
+    const width = document.getElementById('threatMap').clientWidth;
+    const height = 500;
+
+    // Create SVG container
+    const svg = d3.select("#threatMap")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // Projection and path
+    const projection = d3.geoMercator()
+        .scale(130)
+        .translate([width / 2, height / 1.5]);
+
+    const path = d3.geoPath().projection(projection);
+
+    // Load world map data
+    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
+        const countries = topojson.feature(world, world.objects.countries);
+
+        // Draw countries
+        svg.selectAll(".country")
+            .data(countries.features)
+            .enter()
+            .append("path")
+            .attr("class", "country")
+            .attr("d", path)
+            .style("fill", "rgba(136, 146, 176, 0.1)")
+            .style("stroke", "rgba(136, 146, 176, 0.3)");
+
+        // Generate fake threat data
+        const threatData = [
+            { loc: [ -74.006, 40.7128 ], severity: "critical" },  // NYC
+            { loc: [ -118.2437, 34.0522 ], severity: "warning" }, // LA
+            { loc: [ 139.6917, 35.6895 ], severity: "critical" }, // Tokyo
+            { loc: [ -0.1276, 51.5072 ], severity: "warning" },  // London
+            { loc: [ 37.6173, 55.7558 ], severity: "neutral" }    // Moscow
+        ];
+
+        // Plot threats
+        threatData.forEach((threat) => {
+            const [x, y] = projection(threat.loc);
+            
+            svg.append("circle")
+                .attr("cx", x)
+                .attr("cy", y)
+                .attr("r", 8)
+                .style("fill", getSeverityColor(threat.severity))
+                .style("opacity", 0.7)
+                .call(pulse, threat.severity);
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const newThreat = {
+                loc: [Math.random() * 360 - 180, Math.random() * 180 - 90],
+                severity: ["critical", "warning", "neutral"][Math.floor(Math.random() * 3)]
+            };
+            
+            const [x, y] = projection(newThreat.loc);
+            
+            svg.append("circle")
+                .attr("cx", x)
+                .attr("cy", y)
+                .attr("r", 0)
+                .style("fill", getSeverityColor(newThreat.severity))
+                .transition()
+                .duration(1000)
+                .attr("r", 8)
+                .call(pulse, newThreat.severity);
+        }, 3000);
+    });
+
+    // Pulse animation function
+    function pulse(selection, severity) {
+        if (severity === "neutral") return;
+        
+        selection.transition()
+            .duration(2000)
+            .attr("r", 12)
+            .style("opacity", 0)
+            .transition()
+            .duration(1000)
+            .attr("r", 8)
+            .style("opacity", 0.7)
+            .on("end", function() {
+                if (severity === "critical") {
+                    d3.select(this).call(pulse, severity);
+                }
+            });
+    }
+
+    // Helper function for severity colors
+    function getSeverityColor(severity) {
+        return {
+            critical: "#ff4d4d",
+            warning: "#ffcc00",
+            neutral: "#00ff00"
+        }[severity];
+    }
+
+    // Animate stats counters
+    animateStats();
+}
+
+function animateStats() {
+    document.querySelectorAll('[data-count]').forEach(el => {
+        const target = +el.getAttribute('data-count');
+        const duration = 2000;
+        const start = 0;
+        const increment = target / (duration / 16);
+        
+        let current = start;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                clearInterval(timer);
+                current = target;
+            }
+            el.textContent = Math.floor(current).toLocaleString();
+        }, 16);
+    });
+}
