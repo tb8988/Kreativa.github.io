@@ -1087,3 +1087,55 @@ button {
         gap: 1rem;
     }
 }
+
+
+
+/* Logo Glow Effect */
+.logo-container {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 1000;
+    /* New glow styles */
+    padding: 10px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle at center,
+        rgba(0, 255, 0, 0.2) 0%,
+        transparent 70%
+    );
+    animation: logo-pulse 4s infinite alternate;
+    transition: all 0.3s ease;
+}
+
+.logo-container:hover {
+    animation: logo-pulse 2s infinite alternate;
+    background: radial-gradient(
+        circle at center,
+        rgba(0, 255, 0, 0.3) 0%,
+        transparent 70%
+    );
+}
+
+@keyframes logo-pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+    }
+}
+
+.company-logo {
+    height: 80px;
+    width: auto;
+    position: relative;
+    z-index: 1;
+    /* Ensure logo sits above glow */
+    filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.5));
+    transition: all 0.3s ease;
+}
+
+.company-logo:hover {
+    filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.8));
+}
