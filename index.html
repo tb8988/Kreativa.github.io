@@ -26,7 +26,9 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 </head>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <body>
     <!-- Navigation Logo -->
     <div class="logo-container">
@@ -39,10 +41,18 @@
         <div class="hero-content">
             <h1>Secure Digital Evolution</h1>
             <p class="subtitle">AI-Powered Cybersecurity & Enterprise Solutions</p>
-            <div class="cta-container">
+            <!-- <div class="cta-container">
                 <button class="primary-btn" id="mainCta">Start Free Audit</button>
                 <button class="secondary-btn">Explore Solutions</button>
-            </div>
+            </div> -->
+			<div class="cta-container">
+    <button class="primary-btn" id="mainCta" data-calendly="https://calendly.com/kreativatech/audit">
+        Start Free Audit
+    </button>
+    <button class="secondary-btn" id="solutionsBtn">
+        Explore Solutions
+    </button>
+</div>
         </div>
     </section>
 
