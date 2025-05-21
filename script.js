@@ -702,3 +702,189 @@ function animateStats() {
 }
 
 
+// New Threat Ticker Functionality
+function initThreatTicker() {
+    const threats = [
+        "New Zero-Day Exploit Detected in Wild",
+        "Global Ransomware Attacks +37% This Month",
+        "AI-Powered Phishing Campaigns Rising",
+        "Critical Vulnerability in Apache Log4j (CVE-2024-1234)"
+    ];
+    
+    const ticker = document.querySelector('.threat-ticker #ticker-text');
+    if (!ticker) return;
+    
+    let currentIndex = 0;
+    
+    const updateTicker = () => {
+        // Animate out
+        gsap.to(ticker, {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => {
+                ticker.textContent = threats[currentIndex];
+                // Animate in
+                gsap.to(ticker, {
+                    opacity: 1,
+                    duration: 0.5
+                });
+                
+                // Pulse animation for critical alerts
+                if (currentIndex === 0 || currentIndex === 3) {
+                    gsap.to('.threat-ticker', {
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+                        duration: 0.5,
+                        yoyo: true,
+                        repeat: 1
+                    });
+                }
+                
+                currentIndex = (currentIndex + 1) % threats.length;
+            }
+        });
+    };
+    
+    // Initial update
+    updateTicker();
+    
+    // Update every 8 seconds
+    setInterval(updateTicker, 8000);
+}
+
+// New Risk Calculator
+function initRiskCalculator() {
+    const employeeCount = document.getElementById('employee-count');
+    const employeeDisplay = document.getElementById('employee-display');
+    const systemsCount = document.getElementById('critical-systems');
+    const systemsDisplay = document.getElementById('systems-display');
+    const calculateBtn = document.getElementById('calculate-risk');
+    const riskLevel = document.getElementById('risk-level');
+    const riskScore = document.getElementById('risk-score');
+    const riskDescription = document.getElementById('risk-description');
+    
+    if (!employeeCount || !calculateBtn) return;
+    
+    // Update slider displays
+    employeeCount.addEventListener('input', () => {
+        employeeDisplay.textContent = employeeCount.value;
+    });
+    
+    systemsCount.addEventListener('input', () => {
+        systemsDisplay.textContent = systemsCount.value;
+    });
+    
+    // Calculate risk
+    calculateBtn.addEventListener('click', () => {
+        const employees = parseInt(employeeCount.value);
+        const systems = parseInt(systemsCount.value);
+        
+        // Simple risk algorithm (replace with your actual calculation)
+        const risk = Math.min(100, 
+            (employees * 0.02) + 
+            (systems * 1.5) + 
+            (Math.random() * 10)
+        );
+        
+        // Animate the result
+        gsap.to(riskLevel, {
+            width: `${risk}%`,
+            duration: 1.5,
+            ease: "power3.out"
+        });
+        
+        // Animate counter
+        let current = 0;
+        const duration = 2000;
+        const increment = risk / (duration / 16);
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= risk) {
+                clearInterval(timer);
+                current = risk;
+            }
+            riskScore.textContent = `${Math.floor(current)}%`;
+        }, 16);
+        
+        // Set description based on risk level
+        let description = "";
+        if (risk < 30) {
+            description = "Low risk profile. Basic security measures recommended.";
+        } else if (risk < 60) {
+            description = "Moderate risk. Consider enhanced security controls.";
+        } else {
+            description = "High risk exposure. Immediate assessment recommended.";
+        }
+        
+        riskDescription.textContent = description;
+    });
+}
+
+// Initialize new components in DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Existing initializations...
+    
+    // New components
+    initThreatTicker();
+    initRiskCalculator();
+    
+    // Animate dashboard counters
+    animateDashboardCounters();
+});
+
+// Animate dashboard counters
+function animateDashboardCounters() {
+    document.querySelectorAll('.live-counter').forEach(el => {
+        const target = parseInt(el.getAttribute('data-target'));
+        const duration = 2000;
+        const start = 0;
+        const increment = target / (duration / 16);
+        
+        let current = start;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                clearInterval(timer);
+                current = target;
+            }
+            el.textContent = Math.floor(current).toLocaleString();
+        }, 16);
+    });
+}
+
+// Enhanced Chat with Security Questions
+function initChat() {
+    // Existing chat code...
+    
+    // Add security-specific responses
+    const securityResponses = {
+        "compliance": "Our platform automates 85-95% of compliance requirements for standards like GDPR, HIPAA, and NIST CSF. Would you like me to send you our compliance checklist?",
+        "pricing": "We offer tiered pricing based on your organization's size and needs. Enterprise packages start at $15K/month. I can connect you with our sales team for a custom quote.",
+        "case study": "We recently helped a Fortune 500 healthcare provider reduce security incidents by 92%. Here's the full case study: [link]"
+    };
+    
+    // Modify handleSendMessage to detect security keywords
+    const handleSendMessage = () => {
+        const message = userMessage.value.trim().toLowerCase();
+        if (message) {
+            addMessage(message, true);
+            userMessage.value = '';
+            
+            // Check for keywords
+            let response = "I'll help with that. Our security experts can provide more details.";
+            for (const [keyword, reply] of Object.entries(securityResponses)) {
+                if (message.includes(keyword)) {
+                    response = reply;
+                    break;
+                }
+            }
+            
+            setTimeout(() => {
+                addMessage(response);
+            }, 1000);
+        }
+    };
+    
+    // Update event listeners...
+}
+

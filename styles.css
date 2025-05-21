@@ -1140,3 +1140,330 @@ button {
     filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.8));
 }
 
+/* ======================
+   New Dashboard Styles
+   ====================== */
+.dashboard-section {
+    background: rgba(2, 12, 27, 0.7);
+    border-top: 1px solid rgba(0, 255, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-card {
+    background: rgba(2, 12, 27, 0.9);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid rgba(0, 255, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.card-icon.critical { background: rgba(255, 77, 77, 0.1); color: #ff4d4d; }
+.card-icon.warning { background: rgba(255, 204, 0, 0.1); color: #ffcc00; }
+.card-icon.neutral { background: rgba(0, 255, 0, 0.1); color: #00ff00; }
+
+.live-counter {
+    font-size: 3rem;
+    font-family: 'Space Grotesk', monospace;
+    color: #00ff00;
+    margin: 1rem 0;
+}
+
+.threat-breakdown {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.threat-type {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.dot.malware { background: #ff4d4d; }
+.dot.phishing { background: #ffcc00; }
+
+/* ======================
+   Compliance Matrix
+   ====================== */
+.compliance-section {
+    background: linear-gradient(180deg, rgba(2, 12, 27, 0.7) 0%, rgba(10, 25, 47, 1) 100%);
+}
+
+.compliance-matrix {
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+.compliance-matrix table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(2, 12, 27, 0.7);
+}
+
+.compliance-matrix th, 
+.compliance-matrix td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.compliance-matrix th {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #00ff00;
+}
+
+.compliance-bar {
+    height: 8px;
+    background: linear-gradient(90deg, #00F2FE 0%, #4FACFE 100%);
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+/* ======================
+   Trust Badges
+   ====================== */
+.trust-badges {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.badge-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.badge-item img {
+    height: 160px;
+    width: auto;
+    filter: grayscale(100%) brightness(2);
+    transition: all 0.3s ease;
+}
+
+.badge-item:hover img {
+    filter: none;
+}
+
+/* ======================
+   Comparison Tool
+   ====================== */
+.comparison-tool {
+    background: rgba(2, 12, 27, 0.7);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.comparison-tool table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-tool th {
+    text-align: left;
+    padding: 1rem;
+    background: rgba(0, 255, 0, 0.1);
+    color: #00ff00;
+}
+
+.comparison-tool td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(136, 146, 176, 0.1);
+}
+
+.success { color: #00ff00; }
+.danger { color: #ff4d4d; }
+
+/* ======================
+   Executive Section
+   ====================== */
+.executive-section {
+    background: url('assets/executive-bg.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+.executive-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(2, 12, 27, 0.9);
+    z-index: 0;
+}
+
+.executive-container {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.executive-content {
+    flex: 1;
+    padding-right: 3rem;
+}
+
+.executive-image {
+    flex: 1;
+}
+
+.executive-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.brief-points {
+    display: flex;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.point {
+    text-align: center;
+}
+
+.point-value {
+    font-size: 2.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #00ff00;
+    margin-bottom: 0.5rem;
+}
+
+.download-btn {
+    background: #00ff00;
+    color: #0A192F;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ======================
+   Risk Assessment
+   ====================== */
+.risk-assessment {
+    background: linear-gradient(180deg, rgba(46, 9, 80, 0.7) 0%, rgba(10, 25, 47, 1) 100%);
+}
+
+.risk-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 3rem;
+}
+
+.risk-content {
+    flex: 1;
+}
+
+.risk-result {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.risk-meter {
+    width: 100%;
+    height: 20px;
+    background: rgba(136, 146, 176, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffcc00, #ff4d4d);
+    width: 0%;
+    transition: width 1s ease;
+}
+
+.risk-value {
+    font-size: 3rem;
+    font-family: 'Space Grotesk', sans-serif;
+    margin-bottom: 1rem;
+}
+
+/* ======================
+   Threat Ticker
+   ====================== */
+.threat-ticker {
+    background: rgba(255, 0, 0, 0.15);
+    padding: 12px 20px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    margin: 1rem 0;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.alert-badge {
+    background: #ff4d4d;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .executive-container,
+    .risk-container {
+        flex-direction: column;
+    }
+    
+    .executive-content {
+        padding-right: 0;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .brief-points {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
