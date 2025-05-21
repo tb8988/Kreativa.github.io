@@ -475,7 +475,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Add to Threat Analyzer section
-function initThreatTicker() {
+/* function initThreatTicker() {
     const threats = [
         "New Zero-Day Exploit Detected in Wild",
         "Global Ransomware Attacks +37% This Month",
@@ -493,7 +493,53 @@ function initThreatTicker() {
         ticker.classList.add('pulse');
         setTimeout(() => ticker.classList.remove('pulse'), 1000);
     }, 8000);
+} */
+
+// ======================
+// Threat Analyzer (Real API)
+// ======================
+async function initRadarChart() {
+    const ctx = document.getElementById('radarChart');
+    if (!ctx) return null;
+
+    try {
+        const response = await fetch(CONFIG.API_ENDPOINTS.THREAT_DATA);
+        if (!response.ok) throw new Error('API error');
+        const data = await response.json();
+
+        return new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: data.categories,
+                datasets: [{
+                    label: 'Threat Level',
+                    data: data.values,
+                    backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                    borderColor: '#00FF00',
+                    pointBackgroundColor: '#00FF00',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(204, 214, 246, 0.1)' },
+                        grid: { color: 'rgba(204, 214, 246, 0.1)' },
+                        pointLabels: { color: '#CCD6F6' },
+                        ticks: { display: false }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    } catch (error) {
+        console.error("Threat API failed:", error);
+        return createMockRadarChart(ctx); // Fallback
+    }
 }
+
 
 // New calculator component
 function initROICalculator() {
@@ -570,7 +616,7 @@ function initThreatMap() {
         });
 
         // Simulate real-time updates
-        setInterval(() => {
+        /* setInterval(() => {
             const newThreat = {
                 loc: [Math.random() * 360 - 180, Math.random() * 180 - 90],
                 severity: ["critical", "warning", "neutral"][Math.floor(Math.random() * 3)]
@@ -587,7 +633,21 @@ function initThreatMap() {
                 .duration(1000)
                 .attr("r", 8)
                 .call(pulse, newThreat.severity);
-        }, 3000);
+        }, 3000); */
+		// ======================
+// Threat Map (Live Data)
+// ======================
+async function initThreatMap() {
+    try {
+        const response = await fetch('https://api.kreativatech.com/threat-map');
+        const threats = await response.json();
+        renderThreatMap(threats);
+        updateThreatStats(threats.stats);
+    } catch (error) {
+        console.error("Using mock threat data", error);
+        renderThreatMap(CONFIG.FALLBACK_DATA.threats);
+    }
+}
     });
 
     // Pulse animation function
