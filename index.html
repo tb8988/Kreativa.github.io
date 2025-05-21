@@ -118,24 +118,26 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="contact-section">
-        <div class="contact-container">
-            <h2>Get In Touch</h2>
-            <p>Ready to secure your digital assets? Contact our team today.</p>
-            <form id="contactForm">
-                <div class="form-group">
-                    <input type="text" id="contactName" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="contactEmail" placeholder="Email Address" required>
-                </div>
-                <div class="form-group">
-                    <textarea id="contactMessage" placeholder="How can we help you?" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-        </div>
-    </section>
+<section class="contact-section">
+    <div class="contact-container">
+        <h2>Get In Touch</h2>
+        <p>Ready to secure your digital assets? Contact our team today.</p>
+        <form id="contactForm" action="https://formspree.io/f/xanokzoo" method="POST">
+            <div class="form-group">
+                <input type="text" id="contactName" name="name" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" id="contactEmail" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group">
+                <textarea id="contactMessage" name="message" placeholder="How can we help you?" required></textarea>
+            </div>
+            <input type="hidden" name="_subject" value="New Contact from Kreativa Tech Website">
+            <input type="hidden" name="_replyto" id="replyTo">
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </div>
+</section>
 
     <!-- AI Chat Widget -->
     <div id="chatWidget" class="chat-widget">

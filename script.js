@@ -290,17 +290,60 @@ function detectIntent(message) {
 }
 
 // Contact Form
+// Contact Form with Formspree
 function initContactForm() {
     const form = document.getElementById('contactForm');
     if (!form) return;
 
-    form.addEventListener('submit', (e) => {
+    // Set reply-to dynamically
+    document.getElementById('contactEmail').addEventListener('input', (e) => {
+        document.getElementById('replyTo').value = e.target.value;
+    });
+
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        alert('Thank you for your message! We will contact you soon.');
-        form.reset();
+        
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        try {
+            // UI feedback
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            // Send form data
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                // Success UI
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                form.reset();
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 3000);
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            // Error UI
+            submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+            setTimeout(() => {
+                submitBtn.textContent = 'Try Again';
+                submitBtn.disabled = false;
+            }, 2000);
+            console.error('Form error:', error);
+        }
     });
 }
-
 // Particle Background
 function initParticles() {
     const canvas = document.getElementById('threeCanvas');
