@@ -1140,32 +1140,3 @@ button {
     filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.8));
 }
 
-/* ======================
-   Loading States 
-   ====================== */
-.loading-spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(0,255,0,0.3);
-    border-radius: 50%;
-    border-top-color: #00FF00;
-    animation: spin 1s ease-in-out infinite;
-    margin-right: 10px;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* ======================
-   API Error States 
-   ====================== */
-.api-error {
-    color: #ff4d4d;
-    border: 1px solid rgba(255, 77, 77, 0.3);
-    background: rgba(255, 77, 77, 0.1);
-    padding: 1rem;
-    border-radius: 8px;
-    margin-top: 1rem;
-}
