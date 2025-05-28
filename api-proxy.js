@@ -1,7 +1,7 @@
 const express = require('express');
-const fetch = require('node-fetch');
+const fetch = require('node-fetch'); // Install with: npm install node-fetch
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.get('/api/otx', async (req, res) => {
   try {
