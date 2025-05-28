@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initParticles();
     initCardGlowEffects();
     initThreatMap();
+	initThreatTicker();
     
     console.log("Website fully initialized");
 });
@@ -475,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Add to Threat Analyzer section
-function initThreatTicker() {
+/* function initThreatTicker() {
     const threats = [
         "New Zero-Day Exploit Detected in Wild",
         "Global Ransomware Attacks +37% This Month",
@@ -493,7 +494,7 @@ function initThreatTicker() {
         ticker.classList.add('pulse');
         setTimeout(() => ticker.classList.remove('pulse'), 1000);
     }, 8000);
-}
+} */
 
 // ======================
 // Threat Analyzer (Real API)
@@ -634,7 +635,7 @@ function initThreatMap() {
                 .attr("r", 8)
                 .call(pulse, newThreat.severity);
         }, 3000); */
-		// ======================
+// ======================
 // Threat Map (Live Data)
 // ======================
 async function initThreatMap() {
@@ -703,7 +704,7 @@ function animateStats() {
 
 
 // New Threat Ticker Functionality
-function initThreatTicker() {
+/* function initThreatTicker() {
     const threats = [
         "New Zero-Day Exploit Detected in Wild",
         "Global Ransomware Attacks +37% This Month",
@@ -749,7 +750,94 @@ function initThreatTicker() {
     
     // Update every 8 seconds
     setInterval(updateTicker, 8000);
+} */
+
+
+async function fetchAlienVaultThreats() {
+    // Fetch latest pulses (public, limited without authentication)
+    const url = "https://otx.alienvault.com/api/v1/pulses/subscribed";
+    try {
+        const res = await fetch(url, { headers: { "Accept": "application/json" } });
+        if (!res.ok) throw new Error("AlienVault OTX API error");
+        const data = await res.json();
+        // Get top pulse names
+        return (data.results || []).slice(0, 5).map(p => p.name);
+    } catch (e) {
+        console.warn("AlienVault OTX fetch failed:", e);
+        return [];
+    }
 }
+
+async function fetchCISAThreats() {
+    // Fetch CISA advisories (JSON feed)
+    const url = "https://www.cisa.gov/sites/default/files/feeds/alerts.json";
+    try {
+        const res = await fetch(url, { headers: { "Accept": "application/json" } });
+        if (!res.ok) throw new Error("CISA API error");
+        const data = await res.json();
+        // Get top advisories titles
+        return (data.items || []).slice(0, 5).map(item => item.title);
+    } catch (e) {
+        console.warn("CISA fetch failed:", e);
+        return [];
+    }
+}
+
+async function initThreatTicker() {
+    const ticker = document.querySelector('.threat-ticker #ticker-text');
+    if (!ticker) return;
+
+    // Show loading state
+    ticker.textContent = "Loading live threat intelligence...";
+
+    // Fetch from both APIs
+    let threats = [];
+    const [otx, cisa] = await Promise.all([
+        fetchAlienVaultThreats(),
+        fetchCISAThreats()
+    ]);
+    threats = [...otx, ...cisa].filter(Boolean);
+
+    if (threats.length === 0) {
+        threats = ["No live threats available. Check your connection or try again later."];
+    }
+
+    let currentIndex = 0;
+
+    const updateTicker = () => {
+        // Animate out
+        gsap.to(ticker, {
+            opacity: 0,
+            duration: 0.5,
+            onComplete: () => {
+                ticker.textContent = threats[currentIndex];
+                // Animate in
+                gsap.to(ticker, {
+                    opacity: 1,
+                    duration: 0.5
+                });
+
+                // Pulse animation for critical alerts (if keywords found)
+                if (/zero.?day|critical|exploit|ransomware|urgent|cve|vulnerab/i.test(threats[currentIndex])) {
+                    gsap.to('.threat-ticker', {
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+                        duration: 0.5,
+                        yoyo: true,
+                        repeat: 1
+                    });
+                }
+                currentIndex = (currentIndex + 1) % threats.length;
+            }
+        });
+    };
+
+    // Initial update
+    updateTicker();
+
+    // Update every 8 seconds
+    setInterval(updateTicker, 8000);
+}
+
 
 // New Risk Calculator
 function initRiskCalculator() {
