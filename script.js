@@ -754,8 +754,8 @@ function animateStats() {
 
 
 async function fetchAlienVaultThreats() {
-    // Fetch latest pulses (public, limited without authentication)
-    const url = "https://otx.alienvault.com/api/v1/pulses/subscribed";
+    // Now fetch from your own proxy
+    const url = "/api/otx";
     try {
         const res = await fetch(url, { headers: { "Accept": "application/json" } });
         if (!res.ok) throw new Error("AlienVault OTX API error");
@@ -769,8 +769,8 @@ async function fetchAlienVaultThreats() {
 }
 
 async function fetchCISAThreats() {
-    // Fetch CISA advisories (JSON feed)
-    const url = "https://www.cisa.gov/sites/default/files/feeds/alerts.json";
+    // Now fetch from your own proxy
+    const url = "/api/cisa";
     try {
         const res = await fetch(url, { headers: { "Accept": "application/json" } });
         if (!res.ok) throw new Error("CISA API error");
@@ -790,7 +790,7 @@ async function initThreatTicker() {
     // Show loading state
     ticker.textContent = "Loading live threat intelligence...";
 
-    // Fetch from both APIs
+    // Fetch from both APIs via your proxy
     let threats = [];
     const [otx, cisa] = await Promise.all([
         fetchAlienVaultThreats(),
