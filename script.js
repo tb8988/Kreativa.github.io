@@ -704,7 +704,7 @@ function animateStats() {
 
 
 // New Threat Ticker Functionality
-/* function initThreatTicker() {
+function initThreatTicker() {
     const threats = [
         "New Zero-Day Exploit Detected in Wild",
         "Global Ransomware Attacks +37% This Month",
@@ -750,10 +750,10 @@ function animateStats() {
     
     // Update every 8 seconds
     setInterval(updateTicker, 8000);
-} */
+}
 
 
-async function fetchAlienVaultThreats() {
+/* async function fetchAlienVaultThreats() {
     // Now fetch from your own proxy
     const url = "/api/otx";
     try {
@@ -781,9 +781,9 @@ async function fetchCISAThreats() {
         console.warn("CISA fetch failed:", e);
         return [];
     }
-}
+} */
 
-async function initThreatTicker() {
+/* async function initThreatTicker() {
     const ticker = document.querySelector('.threat-ticker #ticker-text');
     if (!ticker) return;
 
@@ -836,7 +836,7 @@ async function initThreatTicker() {
 
     // Update every 8 seconds
     setInterval(updateTicker, 8000);
-}
+} */
 
 
 // New Risk Calculator
