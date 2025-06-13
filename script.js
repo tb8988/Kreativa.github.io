@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initRiskCalculator(); // Added from the second listener
     
     // 4. Animations
-    animateDashboardCounters(); // Added from the second listener
+    // animateDashboardCounters(); // This will be partially replaced by updateDashboardWithRealData for the critical threats counter
+    // If other counters still need this, it might need to be adjusted or called selectively.
+
+    updateDashboardWithRealData(); // Fetch and update dashboard with real data
 
     // Initialize placeholder event listeners for previously unresponsive UI elements
     initPlaceholderListeners();
@@ -76,6 +79,127 @@ function initPlaceholderListeners() {
             alert('View All Applications button clicked - Placeholder');
         });
     }
+}
+
+function updateDashboardWithRealData() {
+    // Fetch Critical Threat Count
+    fetch('/api/internal/dashboard/critical-threat-count') // Adjust URL if proxy is not at the same origin
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} - Critical Threat Count`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const countElement = document.querySelector('.dashboard-card .live-counter[data-target="2478"]');
+            if (countElement && data.criticalThreatCount !== undefined) {
+                const targetValue = parseInt(data.criticalThreatCount); // Renamed to avoid conflict
+                const duration = 2000;
+                const startVal = 0; // Or parseInt(countElement.textContent) if starting from current display
+
+                // Guard against non-numeric startVal if parsing current content
+                const effectiveStartVal = isNaN(parseInt(countElement.textContent)) ? 0 : parseInt(countElement.textContent);
+
+                const increment = (targetValue - effectiveStartVal) / (duration / 16); // Approx. 60fps
+
+                let current = effectiveStartVal;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if ((increment > 0 && current >= targetValue) || (increment < 0 && current <= targetValue) || increment === 0) {
+                        clearInterval(timer);
+                        current = targetValue;
+                    }
+                    countElement.textContent = Math.floor(current).toLocaleString();
+                }, 16);
+
+                // Optional: Update the h3 title if desired
+                const titleElement = countElement.closest('.dashboard-card').querySelector('h3');
+                if (titleElement) {
+                    // titleElement.textContent = 'Newly Identified Critical Threats (7d)';
+                }
+            } else if (countElement) {
+                countElement.textContent = data.criticalThreatCount !== undefined ? data.criticalThreatCount.toLocaleString() : "N/A";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching critical threat count:', error);
+            const countElement = document.querySelector('.dashboard-card .live-counter[data-target="2478"]');
+            if (countElement) {
+                countElement.textContent = "Error";
+            }
+        });
+
+    // Fetch Threat Categories
+    fetch('/api/internal/dashboard/threat-categories') // Adjust URL if proxy is not at the same origin
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} - Threat Categories`);
+            }
+            return response.json();
+        })
+        .then(apiResponse => { // Changed data to apiResponse to avoid conflict
+            const data = apiResponse.categories; // Assuming the categories are in a .categories property from the backend
+            const breakdownContainer = document.querySelector('.dashboard-card .threat-breakdown');
+
+            if (breakdownContainer && Array.isArray(data)) {
+                const threatTypeElements = breakdownContainer.querySelectorAll('.threat-type');
+
+                data.forEach((apiItem, index) => {
+                    if (threatTypeElements[index]) {
+                        const currentElement = threatTypeElements[index];
+                        const categoryNameEl = currentElement.querySelector('span:not(.dot)');
+                        const dotEl = currentElement.querySelector('.dot');
+
+                        if (categoryNameEl) {
+                            // Preserve the structure for the percentage span
+                            categoryNameEl.innerHTML = `${apiItem.category}: <span class="percentage">${apiItem.percentage}%</span>`;
+                        }
+                        if (dotEl) {
+                            dotEl.className = `dot ${apiItem.category.toLowerCase().replace(/\s+/g, '-')}`; // Make class name CSS-friendly
+                        }
+                        currentElement.style.display = ''; // Ensure it's visible
+                    }
+                });
+
+                // Hide any extra mock elements if API returns fewer items
+                if (threatTypeElements.length > data.length) {
+                    for (let i = data.length; i < threatTypeElements.length; i++) {
+                        threatTypeElements[i].style.display = 'none';
+                    }
+                }
+            } else if (breakdownContainer && apiResponse.source === "Mock Data" && Array.isArray(apiResponse.categories)) {
+                // Handling for current mock structure if it's top-level array from proxy
+                 const mockData = apiResponse.categories;
+                 const threatTypeElements = breakdownContainer.querySelectorAll('.threat-type');
+                 mockData.forEach((apiItem, index) => {
+                    if (threatTypeElements[index]) {
+                        const currentElement = threatTypeElements[index];
+                        const categoryNameEl = currentElement.querySelector('span:not(.dot)');
+                        const dotEl = currentElement.querySelector('.dot');
+                         if (categoryNameEl) {
+                            categoryNameEl.innerHTML = `${apiItem.category}: <span class="percentage">${apiItem.percentage}%</span>`;
+                        }
+                        if (dotEl) {
+                            dotEl.className = `dot ${apiItem.category.toLowerCase().replace(/\s+/g, '-')}`;
+                        }
+                        currentElement.style.display = '';
+                    }
+                });
+                if (threatTypeElements.length > mockData.length) {
+                    for (let i = mockData.length; i < threatTypeElements.length; i++) {
+                        threatTypeElements[i].style.display = 'none';
+                    }
+                }
+
+            }
+
+
+        })
+        .catch(error => {
+            console.error('Error fetching threat categories:', error);
+            const breakdownContainer = document.querySelector('.dashboard-card .threat-breakdown');
+            if(breakdownContainer) breakdownContainer.innerHTML = "<p style='color:red;'>Error loading categories.</p>";
+        });
 }
 
 // Service Cards
