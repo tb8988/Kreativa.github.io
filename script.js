@@ -16,9 +16,191 @@ document.addEventListener('DOMContentLoaded', () => {
     initCardGlowEffects();
     initThreatMap();
 	initThreatTicker();
+    initRiskCalculator(); // Added from the second listener
     
+    // 4. Animations
+    // animateDashboardCounters(); // This will be partially replaced by updateDashboardWithRealData for the critical threats counter
+    // If other counters still need this, it might need to be adjusted or called selectively.
+
+    updateDashboardWithRealData(); // Fetch and update dashboard with real data
+
+    // Initialize placeholder event listeners for previously unresponsive UI elements
+    initPlaceholderListeners();
+
     console.log("Website fully initialized");
 });
+
+function initPlaceholderListeners() {
+    // Hero Section Buttons
+    const mainCta = document.getElementById('mainCta');
+    if (mainCta) {
+        mainCta.addEventListener('click', () => {
+            console.log('Start Free Audit button clicked');
+            alert('Start Free Audit button clicked - Placeholder');
+        });
+    }
+
+    const exploreSolutionsBtn = document.querySelector('.hero-content .secondary-btn');
+    if (exploreSolutionsBtn) {
+        exploreSolutionsBtn.addEventListener('click', () => {
+            console.log('Explore Solutions button clicked');
+            alert('Explore Solutions button clicked - Placeholder');
+        });
+    }
+
+    // Case Study Filters
+    const filterButtons = document.querySelectorAll('.case-studies .filters button');
+    if (filterButtons.length > 0) {
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filterValue = button.dataset.filter;
+                console.log(`Case Study filter button clicked: ${filterValue}`);
+                alert(`Case Study filter: ${filterValue} - Placeholder`);
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+    }
+
+    // Executive Briefing Download Button
+    const downloadReportBtn = document.querySelector('.executive-section .download-btn');
+    if (downloadReportBtn) {
+        downloadReportBtn.addEventListener('click', () => {
+            console.log('Download Full Security Report button clicked');
+            alert('Download Full Security Report button clicked - Placeholder');
+        });
+    }
+
+    // Apps Showcase "View All Applications" Button
+    const viewAllAppsBtn = document.querySelector('.apps-cta .purple-accent-btn');
+    if (viewAllAppsBtn) {
+        viewAllAppsBtn.addEventListener('click', () => {
+            console.log('View All Applications button clicked');
+            alert('View All Applications button clicked - Placeholder');
+        });
+    }
+}
+
+function updateDashboardWithRealData() {
+    // Fetch Critical Threat Count
+    fetch('/api/internal/dashboard/critical-threat-count') // Adjust URL if proxy is not at the same origin
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} - Critical Threat Count`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const countElement = document.querySelector('.dashboard-card .live-counter[data-target="2478"]');
+            if (countElement && data.criticalThreatCount !== undefined) {
+                const targetValue = parseInt(data.criticalThreatCount); // Renamed to avoid conflict
+                const duration = 2000;
+                const startVal = 0; // Or parseInt(countElement.textContent) if starting from current display
+
+                // Guard against non-numeric startVal if parsing current content
+                const effectiveStartVal = isNaN(parseInt(countElement.textContent)) ? 0 : parseInt(countElement.textContent);
+
+                const increment = (targetValue - effectiveStartVal) / (duration / 16); // Approx. 60fps
+
+                let current = effectiveStartVal;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if ((increment > 0 && current >= targetValue) || (increment < 0 && current <= targetValue) || increment === 0) {
+                        clearInterval(timer);
+                        current = targetValue;
+                    }
+                    countElement.textContent = Math.floor(current).toLocaleString();
+                }, 16);
+
+                // Optional: Update the h3 title if desired
+                const titleElement = countElement.closest('.dashboard-card').querySelector('h3');
+                if (titleElement) {
+                    // titleElement.textContent = 'Newly Identified Critical Threats (7d)';
+                }
+            } else if (countElement) {
+                countElement.textContent = data.criticalThreatCount !== undefined ? data.criticalThreatCount.toLocaleString() : "N/A";
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching critical threat count:', error);
+            const countElement = document.querySelector('.dashboard-card .live-counter[data-target="2478"]');
+            if (countElement) {
+                countElement.textContent = "Error";
+            }
+        });
+
+    // Fetch Threat Categories
+    fetch('/api/internal/dashboard/threat-categories') // Adjust URL if proxy is not at the same origin
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status} - Threat Categories`);
+            }
+            return response.json();
+        })
+        .then(apiResponse => { // Changed data to apiResponse to avoid conflict
+            const data = apiResponse.categories; // Assuming the categories are in a .categories property from the backend
+            const breakdownContainer = document.querySelector('.dashboard-card .threat-breakdown');
+
+            if (breakdownContainer && Array.isArray(data)) {
+                const threatTypeElements = breakdownContainer.querySelectorAll('.threat-type');
+
+                data.forEach((apiItem, index) => {
+                    if (threatTypeElements[index]) {
+                        const currentElement = threatTypeElements[index];
+                        const categoryNameEl = currentElement.querySelector('span:not(.dot)');
+                        const dotEl = currentElement.querySelector('.dot');
+
+                        if (categoryNameEl) {
+                            // Preserve the structure for the percentage span
+                            categoryNameEl.innerHTML = `${apiItem.category}: <span class="percentage">${apiItem.percentage}%</span>`;
+                        }
+                        if (dotEl) {
+                            dotEl.className = `dot ${apiItem.category.toLowerCase().replace(/\s+/g, '-')}`; // Make class name CSS-friendly
+                        }
+                        currentElement.style.display = ''; // Ensure it's visible
+                    }
+                });
+
+                // Hide any extra mock elements if API returns fewer items
+                if (threatTypeElements.length > data.length) {
+                    for (let i = data.length; i < threatTypeElements.length; i++) {
+                        threatTypeElements[i].style.display = 'none';
+                    }
+                }
+            } else if (breakdownContainer && apiResponse.source === "Mock Data" && Array.isArray(apiResponse.categories)) {
+                // Handling for current mock structure if it's top-level array from proxy
+                 const mockData = apiResponse.categories;
+                 const threatTypeElements = breakdownContainer.querySelectorAll('.threat-type');
+                 mockData.forEach((apiItem, index) => {
+                    if (threatTypeElements[index]) {
+                        const currentElement = threatTypeElements[index];
+                        const categoryNameEl = currentElement.querySelector('span:not(.dot)');
+                        const dotEl = currentElement.querySelector('.dot');
+                         if (categoryNameEl) {
+                            categoryNameEl.innerHTML = `${apiItem.category}: <span class="percentage">${apiItem.percentage}%</span>`;
+                        }
+                        if (dotEl) {
+                            dotEl.className = `dot ${apiItem.category.toLowerCase().replace(/\s+/g, '-')}`;
+                        }
+                        currentElement.style.display = '';
+                    }
+                });
+                if (threatTypeElements.length > mockData.length) {
+                    for (let i = mockData.length; i < threatTypeElements.length; i++) {
+                        threatTypeElements[i].style.display = 'none';
+                    }
+                }
+
+            }
+
+
+        })
+        .catch(error => {
+            console.error('Error fetching threat categories:', error);
+            const breakdownContainer = document.querySelector('.dashboard-card .threat-breakdown');
+            if(breakdownContainer) breakdownContainer.innerHTML = "<p style='color:red;'>Error loading categories.</p>";
+        });
+}
 
 // Service Cards
 function initServices() {
@@ -194,103 +376,6 @@ function setupScanButton(chart) {
     });
 }
 
-// Enhanced Chat Widget
-function initChat() {
-    const chatWidget = document.getElementById('chatWidget');
-    const chatToggle = document.getElementById('chatToggle');
-    const closeChat = document.getElementById('closeChat');
-    const sendMessage = document.getElementById('sendMessage');
-    const userMessage = document.getElementById('userMessage');
-    const chatMessages = document.getElementById('chatMessages');
-    
-    if (!chatWidget || !chatToggle || !closeChat || !sendMessage || !userMessage || !chatMessages) return;
-
-    // Toggle chat visibility
-    const toggleChat = () => {
-        chatWidget.style.display = chatWidget.style.display === 'block' ? 'none' : 'block';
-    };
-
-    // Add welcome message
-    const addWelcomeMessage = () => {
-        const welcomeMsg = `
-            <div class="message bot-message">
-                <p>Hello! I'm Kreativa Assistant. How can I help you today?</p>
-                <p>You can ask about:</p>
-                <ul>
-                    <li>Our services</li>
-                    <li>Pricing information</li>
-                    <li>Technical support</li>
-                </ul>
-            </div>
-        `;
-        chatMessages.innerHTML = welcomeMsg;
-    };
-
-    // Add message to chat
-    const addMessage = (message, isUser = false) => {
-        const messageClass = isUser ? 'user-message' : 'bot-message';
-        const messageElement = `
-            <div class="message ${messageClass}">
-                <p>${message}</p>
-            </div>
-        `;
-        chatMessages.insertAdjacentHTML('beforeend', messageElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    };
-
-    // Handle sending messages
-    const handleSendMessage = () => {
-        const message = userMessage.value.trim();
-        if (message) {
-            addMessage(message, true);
-            userMessage.value = '';
-            
-            // Simulate bot response after a short delay
-            setTimeout(() => {
-                const responses = [
-                    "Thanks for your message! Our team will get back to you soon.",
-                    "I've noted your question. Would you like me to connect you with a specialist?",
-                    "That's a great question! Let me find the right information for you.",
-                    "We'd be happy to help with that. Can you provide more details?"
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(randomResponse);
-            }, 1000);
-        }
-    };
-// Add to initChat()
-const smartReplies = {
-    "pricing": "Our enterprise packages start at $15K/month with volume discounts. Would you like a custom quote?",
-    "case studies": "We've helped 37 Fortune 500 companies. Here's our healthcare case study: [link]",
-    // Add more intent responses
-};
-
-// Add NLP-like keyword detection
-function detectIntent(message) {
-    const keywords = {
-        'price': 'pricing',
-        'cost': 'pricing',
-        'example': 'case studies'
-    };
-    return keywords[message.toLowerCase()] || 'default';
-}
-    // Event listeners
-    chatToggle.addEventListener('click', toggleChat);
-    closeChat.addEventListener('click', toggleChat);
-    
-    sendMessage.addEventListener('click', handleSendMessage);
-    
-    userMessage.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            handleSendMessage();
-        }
-    });
-
-    // Initialize with welcome message
-    addWelcomeMessage();
-}
-
-// Contact Form
 // Contact Form with Formspree
 function initContactForm() {
     const form = document.getElementById('contactForm');
@@ -909,16 +994,8 @@ function initRiskCalculator() {
 }
 
 // Initialize new components in DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Existing initializations...
-    
-    // New components
-    initThreatTicker();
-    initRiskCalculator();
-    
-    // Animate dashboard counters
-    animateDashboardCounters();
-});
+// The second DOMContentLoaded listener has been removed.
+// Its calls (initRiskCalculator, animateDashboardCounters) have been integrated into the first listener.
 
 // Animate dashboard counters
 function animateDashboardCounters() {
@@ -941,6 +1018,8 @@ function animateDashboardCounters() {
 }
 
 // Enhanced Chat with Security Questions
+// This is a duplicate definition of initChat. The first one should be removed.
+// For now, keeping this as the target, assuming the first one is deleted.
 function initChat() {
     // Existing chat code...
     
